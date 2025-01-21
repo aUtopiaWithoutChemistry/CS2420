@@ -8,8 +8,8 @@ import java.util.Comparator;
  * name. If their first name is equal, then compare their last name, if last names are
  * still equal, then compare UHealthID.
  *
- * @author Zifan Zuo
- * @version 2025-01-20
+ * @author Zifan Zuo and Mi Zeng
+ * @version Jan 20, 2025
  */
 public class OrderByName<Type> implements Comparator<CurrentPatientGeneric<Type>> {
     /**

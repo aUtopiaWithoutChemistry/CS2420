@@ -6,8 +6,8 @@ import java.util.Comparator;
  * Comparator that defines an ordering among current patients using the last date they
  * have been to here.
  *
- * @author Zifan Zuo
- * @version 2025-01-20
+ * @author Zifan Zuo and Mi Zeng
+ * @version Jan 20, 2025
  */
 public class OrderByDate<Type> implements Comparator<CurrentPatientGeneric<Type>> {
     /**

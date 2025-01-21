@@ -6,8 +6,8 @@ import java.util.GregorianCalendar;
  * This class is a subclass of Patient dealing with the current patient,
  * which contains a generic assigned physician and date of last visit.
  *
- * @author Zifan Zuo
- * @version 2025-01-20
+ * @author Zifan Zuo and Mi Zeng
+ * @version Jan 20, 2025
  */
 public class CurrentPatientGeneric<Type> extends Patient {
 

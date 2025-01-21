@@ -16,8 +16,8 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * This class contains tests for Facility.
  *
- * @author CS 2420 course staff and Zifan Zuo
- * @version 2025-01-20
+ * @author CS 2420 course staff, Zifan Zuo and Mi Zeng
+ * @version Jan 20, 2025
  */
 public class FacilityTester {
 

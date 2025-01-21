@@ -11,8 +11,8 @@ import timing.TimingExperiment;
  * Experiment to measure the running time for the lookupByUHID method in 
  * facilities with various numbers of patients.
  *
- * @author CS 2420 course staff and ***STUDENT FILL YOUR NAME IN***
- * @version ***STUDENT FILL IN THE DATE***
+ * @author CS 2420 course staff, Zifan Zuo and Mi Zeng
+ * @version Jan 20, 2025
  */
 public class FacilityLookupTimingExperiment extends TimingExperiment {
 	private static String problemSizeDescription = "";  // TODO: fill in string appropriately
