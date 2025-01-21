@@ -195,9 +195,69 @@ public class FacilityTester {
     }
 
     @Test
-    public void testLargeGetRecentPatients() {
-        
+    public void testLargeGetRecentPatients1970() {
+        ArrayList<CurrentPatient> allPatients = largeFacility.getRecentPatients(new GregorianCalendar(1970, 1, 1));
+        assertEquals(allPatients.size(), 1000);
     }
+
+    @Test
+    public void testLargeGetRecentPatients2025() {
+        ArrayList<CurrentPatient> allPatients = largeFacility.getRecentPatients(new GregorianCalendar(2025, 1, 1));
+        int totalAmount = allPatients.size();
+        largeFacility.addPatient(new CurrentPatient("aa", "bb", uHID1, 0000000, new GregorianCalendar(2026, 2, 8)));
+        ArrayList<CurrentPatient> newPatients = largeFacility.getRecentPatients(new GregorianCalendar(2025, 1, 1));
+        assertEquals(newPatients.size(), totalAmount + 1);
+    }
+
+    @Test
+    public void testLargeGetRecentPatientsNoneExist() {
+        ArrayList<CurrentPatient> allPatients = largeFacility.getRecentPatients(new GregorianCalendar(1970, 1, 1));
+        Collections.sort(allPatients, Comparator.comparing(CurrentPatient::getLastVisit));
+        GregorianCalendar lastDate = allPatients.getLast().getLastVisit();
+        assertEquals(largeFacility.getRecentPatients(lastDate).size(), 0);
+    }
+
+    @Test
+    public void testLargeGetPhysicianList() {
+        ArrayList<Integer> physicians = largeFacility.getPhysicianList();
+        assertNotEquals(physicians.size(), 0);
+    }
+
+    @Test
+    public void testLargeGetPhysicianListNoneDuplicates() {
+        ArrayList<Integer> physicians = largeFacility.getPhysicianList();
+        Collections.sort(physicians);
+        for (int i = 0; i < physicians.size() - 2; i++) {
+            assertNotEquals(physicians.get(i), physicians.get(i + 1));
+        }
+    }
+
+    @Test
+    public void testLargeSetPhysician() {
+        int targetPhysician = 1000000;
+        ArrayList<Integer> physicians = largeFacility.getPhysicianList();
+        while (physicians.contains(targetPhysician)) {
+            targetPhysician += 1;
+        }
+        assertEquals(largeFacility.lookupByPhysician(targetPhysician).size(), 0);
+        UHealthID patientID = new UHealthID("JHSD-7483");
+        CurrentPatient expectedPatient = new CurrentPatient("Blake", "Bird", patientID, targetPhysician, date2);
+        largeFacility.addPatient(expectedPatient);
+        assertEquals(largeFacility.lookupByPhysician(targetPhysician).size(), 1);
+    }
+
+    @Test
+    public void testLargeSetLastVisit() {
+        ArrayList<CurrentPatient> allPatients = largeFacility.getRecentPatients(new GregorianCalendar(1970, 1, 1));
+        Collections.sort(allPatients, Comparator.comparing(CurrentPatient::getLastVisit));
+        CurrentPatient luckyDog = allPatients.getLast();
+        GregorianCalendar lastDate = luckyDog.getLastVisit();
+        GregorianCalendar newLastDate = (GregorianCalendar)lastDate.clone();
+        newLastDate.add(Calendar.DATE, 1);
+        largeFacility.setLastVisit(luckyDog.getUHealthID(), newLastDate);
+        assertEquals(largeFacility.getRecentPatients(lastDate).size(), 1);
+    }
+
     // Helper methods ------------------------------------------------------------
 
     /**
