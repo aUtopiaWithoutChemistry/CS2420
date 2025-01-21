@@ -3,10 +3,7 @@ package assign02;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.GregorianCalendar;
-import java.util.Random;
-import java.util.Scanner;
+import java.util.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 public class FacilityTester {
 
-    private Facility emptyFacility, verySmallFacility, smallFacility;
+    private Facility emptyFacility, verySmallFacility, smallFacility, largeFacility;
     private UHealthID uHID1, uHID2, uHID3;
     private GregorianCalendar date1, date2, date3;
 
@@ -50,6 +47,16 @@ public class FacilityTester {
         // as well as to create and test larger facilities.
         // (HINT: For a larger facility, use the helpers at the end of this file to
         //        generate names, IDs, and dates.)
+
+        largeFacility = new Facility();
+        int testSize = 1000;
+        String[] names = generateNames(testSize * 2);
+        UHealthID[] ids = generateUHIDs(testSize);
+        Random physicians = new Random();
+        GregorianCalendar[] dates = generateDates(testSize);
+        for (int i = 0; i < testSize; i++) {
+            largeFacility.addPatient(new CurrentPatient(names[i], names[testSize - 1 - i], ids[i], 100000 + physicians.nextInt(900000), dates[i]));
+        }
     }
 
     // Empty Facility tests --------------------------------------------------------
@@ -118,7 +125,6 @@ public class FacilityTester {
     }
 
     // Small facility tests -------------------------------------------------------------------------
-
     @Test
     public void testSmallGetRecentPatients() {
         ArrayList<CurrentPatient> actual = smallFacility.getRecentPatients(new GregorianCalendar(2020, 0, 0));
@@ -126,8 +132,72 @@ public class FacilityTester {
     }
 
     // Add more tests for small facility
+    @Test
+    public void testSmallLookupUHID() {
+        Patient expected = new Patient("Blake", "Bird", new UHealthID("JHSD-7483"));
+        CurrentPatient actual = smallFacility.lookupByUHID(new UHealthID("JHSD-7483"));
+        assertEquals(expected, actual);
+    }
 
+    @Test
+    public void testSmallLookupPhysicianCount() {
+        ArrayList<CurrentPatient> actualPatients = smallFacility.lookupByPhysician(8888888);
+        assertEquals(2, actualPatients.size());
+    }
 
+    @Test
+    public void testSmallLookupPhysicianPatient() {
+        Patient expectedPatient = new Patient("Blake", "Bird", new UHealthID("JHSD-7483"));
+        ArrayList<CurrentPatient> actualPatients = smallFacility.lookupByPhysician(0000000);
+        assertEquals(expectedPatient, actualPatients.get(0));
+    }
+
+    @Test
+    public void testSmallAddNewPatient() {
+        assertTrue(smallFacility.addPatient(new CurrentPatient("Jane", "Doe", new UHealthID("BBBB-2222"), 1010101, date1)));
+    }
+
+    @Test
+    public void testSmallUpdatePhysician() {
+        smallFacility.lookupByUHID(new UHealthID("JHSD-7483")).updatePhysician(9090909);
+        CurrentPatient patient = smallFacility.lookupByUHID(new UHealthID("JHSD-7483"));
+        assertEquals(9090909, patient.getPhysician());
+    }
+
+    // Large facility tests ------------------------------------------------------
+    @Test
+    public void testLargeAddPatient() {
+        assertTrue(largeFacility.addPatient(new CurrentPatient("Jane", "Doe", new UHealthID("BBBB-2222"), 1010101, date1)));
+    }
+
+    @Test
+    public void testLargeAddAll() {
+        ArrayList<CurrentPatient> patients = smallFacility.getRecentPatients(new GregorianCalendar(1970, 1, 1));
+        largeFacility.addAll(patients);
+        ArrayList<CurrentPatient> largePatients = largeFacility.getRecentPatients(new GregorianCalendar(1970, 1, 1));
+        assertEquals(1011, largePatients.size());
+    }
+
+    @Test
+    public void testLargeLookupByUHID() {
+        CurrentPatient expected = new CurrentPatient("Blake", "Bird", new UHealthID("JHSD-7483"), 0000000, date1);
+        largeFacility.addPatient(expected);
+        CurrentPatient actual = largeFacility.lookupByUHID(new UHealthID("JHSD-7483"));
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testLargeLookupByPhysician() {
+        CurrentPatient expectedPatient = new CurrentPatient("Blake", "Bird", new UHealthID("JHSD-7483"), 0000000, date2);
+        largeFacility.addPatient(expectedPatient);
+        ArrayList<CurrentPatient> actualPatients = largeFacility.lookupByPhysician(0000000);
+        assertEquals(expectedPatient, actualPatients.get(0));
+    }
+
+    @Test
+    public void testLargeGetRecentPatients() {
+        
+    }
     // Helper methods ------------------------------------------------------------
 
     /**

@@ -54,7 +54,6 @@ public class Facility {
      * exists in the record
      */
     public CurrentPatient lookupByUHID(UHealthID patientID) {
-        // TODO: Fill in the method according to the contract.
         for (CurrentPatient currentPatient : this.patientList) {
             if (currentPatient.getUHealthID().equals(patientID)) {
                 return currentPatient;
@@ -71,7 +70,6 @@ public class Facility {
      * or an empty list if no such patients exist in the record
      */
     public ArrayList<CurrentPatient> lookupByPhysician(int physician) {
-        // TODO: Fill in the method according to the contract.
         ArrayList<CurrentPatient> patients = new ArrayList<>();
         for (CurrentPatient currentPatient : this.patientList) {
             if (currentPatient.getPhysician() == physician) {
@@ -92,7 +90,6 @@ public class Facility {
      * or an empty list if no such patients exist in the record
      */
     public ArrayList<CurrentPatient> getRecentPatients(GregorianCalendar date) {
-        // TODO: Fill in the method according to the contract.
         ArrayList<CurrentPatient> patients = new ArrayList<>();
         for (CurrentPatient currentPatient : this.patientList) {
             if (currentPatient.getLastVisit().after(date)) {
@@ -112,7 +109,6 @@ public class Facility {
      * or an empty list if no patients exist in the record
      */
     public ArrayList<Integer> getPhysicianList() {
-        // TODO: Fill in the method according to the contract.
         ArrayList<Integer> physicians = new ArrayList<>();
         for (CurrentPatient currentPatient : this.patientList) {
             Integer physician = currentPatient.getPhysician();
@@ -133,7 +129,6 @@ public class Facility {
      * @param physician - identifier of patient's new physician
      */
     public void setPhysician(UHealthID patientID, int physician) {
-        // TODO: Fill in the method according to the contract.
         for (CurrentPatient currentPatient : this.patientList) {
             if (currentPatient.getUHealthID().equals(patientID)) {
                 currentPatient.updatePhysician(physician);
@@ -151,7 +146,6 @@ public class Facility {
      * @param date      - date of last visit
      */
     public void setLastVisit(UHealthID patientID, GregorianCalendar date) {
-        // TODO: Fill in the method according to the contract.
         for (CurrentPatient currentPatient : this.patientList) {
             if (currentPatient.getUHealthID().equals(patientID)) {
                 currentPatient.updateLastVisit(date);

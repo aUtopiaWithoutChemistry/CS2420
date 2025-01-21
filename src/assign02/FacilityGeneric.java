@@ -55,7 +55,6 @@ public class FacilityGeneric<Type> {
      * exists in the record
      */
     public CurrentPatientGeneric<Type> lookupByUHID(UHealthID patientID) {
-        // TODO: Fill in the method according to the contract.
         for (CurrentPatientGeneric<Type> currentPatient : this.patientList) {
             if (currentPatient.getUHealthID().equals(patientID)) {
                 return currentPatient;
@@ -72,7 +71,6 @@ public class FacilityGeneric<Type> {
      * or an empty list if no such patients exist in the record
      */
     public ArrayList<CurrentPatientGeneric<Type>> lookupByPhysician(Type physician) {
-        // TODO: Fill in the method according to the contract.
         ArrayList<CurrentPatientGeneric<Type>> patients = new ArrayList<>();
         for (CurrentPatientGeneric<Type> currentPatient : this.patientList) {
             if (currentPatient.getPhysician().equals(physician)) {
@@ -93,7 +91,6 @@ public class FacilityGeneric<Type> {
      * or an empty list if no such patients exist in the record
      */
     public ArrayList<CurrentPatientGeneric<Type>> getRecentPatients(GregorianCalendar date) {
-        // TODO: Fill in the method according to the contract.
         ArrayList<CurrentPatientGeneric<Type>> patients = new ArrayList<>();
         for (CurrentPatientGeneric<Type> currentPatient : this.patientList) {
             if (currentPatient.getLastVisit().after(date)) {
@@ -113,7 +110,6 @@ public class FacilityGeneric<Type> {
      * or an empty list if no patients exist in the record
      */
     public ArrayList<Type> getPhysicianList() {
-        // TODO: Fill in the method according to the contract.
         ArrayList<Type> physicians = new ArrayList<>();
         for (CurrentPatientGeneric<Type> currentPatient : this.patientList) {
             Type physician = currentPatient.getPhysician();
@@ -134,7 +130,6 @@ public class FacilityGeneric<Type> {
      * @param physician - identifier of patient's new physician
      */
     public void setPhysician(UHealthID patientID, Type physician) {
-        // TODO: Fill in the method according to the contract.
         for (CurrentPatientGeneric<Type> currentPatient : this.patientList) {
             if (currentPatient.getUHealthID().equals(patientID)) {
                 currentPatient.updatePhysician(physician);
@@ -152,15 +147,12 @@ public class FacilityGeneric<Type> {
      * @param date      - date of last visit
      */
     public void setLastVisit(UHealthID patientID, GregorianCalendar date) {
-        // TODO: Fill in the method according to the contract.
         for (CurrentPatientGeneric<Type> currentPatient : this.patientList) {
             if (currentPatient.getUHealthID().equals(patientID)) {
                 currentPatient.updateLastVisit(date);
             }
         }
     }
-
-    // TODO
 
     /**
      * Returns the list of current patients in this facility, sorted according to
@@ -177,8 +169,6 @@ public class FacilityGeneric<Type> {
         sort(patientListCopy, cmp);
         return patientListCopy;
     }
-
-    // TODO
 
     /**
      * Performs a SELECTION SORT on the input ArrayList.
