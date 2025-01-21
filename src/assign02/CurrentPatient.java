@@ -9,7 +9,7 @@ import java.util.GregorianCalendar;
  * @author Zifan Zuo
  * @version 2025-01-20
  */
-public class CurrentPatient extends Patient{
+public class CurrentPatient extends Patient {
 
     private int physician;
     private GregorianCalendar lastVisit;
