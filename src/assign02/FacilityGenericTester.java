@@ -125,6 +125,12 @@ public class FacilityGenericTester {
     }
 
     // Add more tests
+//    @Test
+//    public void testUIDLookupByUHIDCount() {
+//        Patient expectedPatient = new Patient(firstNames)
+//        CurrentPatientGeneric<Integer> actualPatients = uIDFacility.lookupByUHID(uHIDs[0]);
+//        assertEquals();
+//    }
 
     // UHealthID facility tests ---------------------------------------------------
 

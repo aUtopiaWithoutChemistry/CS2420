@@ -43,7 +43,9 @@ public class Facility {
      * @param patients - list of patients to be added to this record
      */
     public void addAll(ArrayList<CurrentPatient> patients) {
-        patientList.addAll(patients);
+        for (CurrentPatient patient : patients) {
+            addPatient(patient);
+        }
     }
 
     /**

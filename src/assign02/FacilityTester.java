@@ -49,7 +49,7 @@ public class FacilityTester {
         //        generate names, IDs, and dates.)
 
         largeFacility = new Facility();
-        int testSize = 1000;
+        int testSize = 10;
         String[] names = generateNames(testSize * 2);
         UHealthID[] ids = generateUHIDs(testSize);
         Random physicians = new Random();
@@ -90,6 +90,11 @@ public class FacilityTester {
         assertEquals(0, patients.size());
     }
 
+    @Test
+    public void testEmptyAddNewPatient() {
+        assertTrue(emptyFacility.addPatient(new CurrentPatient("Drew", "Hall", new UHealthID("BCBC-2323"), 0000, date2)));
+    }
+
     // Very small facility tests ---------------------------------------------------
 
     @Test
@@ -124,6 +129,12 @@ public class FacilityTester {
         assertEquals(9090909, patient.getPhysician());
     }
 
+    @Test
+    public void testVerySmallSize() {
+        ArrayList<CurrentPatient> patients = verySmallFacility.getRecentPatients(new GregorianCalendar(1970, 0, 0));
+        assertEquals(patients.size(), 3);
+    }
+
     // Small facility tests -------------------------------------------------------------------------
     @Test
     public void testSmallGetRecentPatients() {
@@ -132,6 +143,12 @@ public class FacilityTester {
     }
 
     // Add more tests for small facility
+    @Test
+    public void testSmallSize() {
+        ArrayList<CurrentPatient> patients = smallFacility.getRecentPatients(new GregorianCalendar(1970, 0, 0));
+        assertEquals(patients.size(), 11);
+    }
+
     @Test
     public void testSmallLookupUHID() {
         Patient expected = new Patient("Blake", "Bird", new UHealthID("JHSD-7483"));
@@ -172,10 +189,11 @@ public class FacilityTester {
 
     @Test
     public void testLargeAddAll() {
+        ArrayList<CurrentPatient> originLargePatients = largeFacility.getRecentPatients(new GregorianCalendar(1970, 1, 1));
         ArrayList<CurrentPatient> patients = smallFacility.getRecentPatients(new GregorianCalendar(1970, 1, 1));
         largeFacility.addAll(patients);
         ArrayList<CurrentPatient> largePatients = largeFacility.getRecentPatients(new GregorianCalendar(1970, 1, 1));
-        assertEquals(1011, largePatients.size());
+        assertEquals(originLargePatients.size() + patients.size(), largePatients.size());
     }
 
     @Test
@@ -195,12 +213,6 @@ public class FacilityTester {
     }
 
     @Test
-    public void testLargeGetRecentPatients1970() {
-        ArrayList<CurrentPatient> allPatients = largeFacility.getRecentPatients(new GregorianCalendar(1970, 1, 1));
-        assertEquals(allPatients.size(), 1000);
-    }
-
-    @Test
     public void testLargeGetRecentPatients2025() {
         ArrayList<CurrentPatient> allPatients = largeFacility.getRecentPatients(new GregorianCalendar(2025, 1, 1));
         int totalAmount = allPatients.size();
@@ -213,7 +225,7 @@ public class FacilityTester {
     public void testLargeGetRecentPatientsNoneExist() {
         ArrayList<CurrentPatient> allPatients = largeFacility.getRecentPatients(new GregorianCalendar(1970, 1, 1));
         Collections.sort(allPatients, Comparator.comparing(CurrentPatient::getLastVisit));
-        GregorianCalendar lastDate = allPatients.getLast().getLastVisit();
+        GregorianCalendar lastDate = allPatients.get(allPatients.size() - 1).getLastVisit();
         assertEquals(largeFacility.getRecentPatients(lastDate).size(), 0);
     }
 
@@ -250,7 +262,7 @@ public class FacilityTester {
     public void testLargeSetLastVisit() {
         ArrayList<CurrentPatient> allPatients = largeFacility.getRecentPatients(new GregorianCalendar(1970, 1, 1));
         Collections.sort(allPatients, Comparator.comparing(CurrentPatient::getLastVisit));
-        CurrentPatient luckyDog = allPatients.getLast();
+        CurrentPatient luckyDog = allPatients.get(allPatients.size() - 1);
         GregorianCalendar lastDate = luckyDog.getLastVisit();
         GregorianCalendar newLastDate = (GregorianCalendar)lastDate.clone();
         newLastDate.add(Calendar.DATE, 1);

@@ -44,7 +44,9 @@ public class FacilityGeneric<Type> {
      * @param patients - list of patients to be added to this record
      */
     public void addAll(ArrayList<CurrentPatientGeneric<Type>> patients) {
-        patientList.addAll(patients);
+        for (CurrentPatientGeneric<Type> patient : patients) {
+            addPatient(patient);
+        }
     }
 
     /**
@@ -162,10 +164,7 @@ public class FacilityGeneric<Type> {
      * @return an ordered list of all patients in this facility
      */
     public ArrayList<CurrentPatientGeneric<Type>> getOrderedPatients(Comparator<CurrentPatientGeneric<Type>> cmp) {
-        ArrayList<CurrentPatientGeneric<Type>> patientListCopy = new ArrayList<CurrentPatientGeneric<Type>>();
-        for (CurrentPatientGeneric<Type> patient : patientList) {
-            patientListCopy.add(patient);
-        }
+        ArrayList<CurrentPatientGeneric<Type>> patientListCopy = new ArrayList<>(patientList);
         sort(patientListCopy, cmp);
         return patientListCopy;
     }

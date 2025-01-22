@@ -15,10 +15,10 @@ import timing.TimingExperiment;
  * @version Jan 20, 2025
  */
 public class FacilityLookupTimingExperiment extends TimingExperiment {
-	private static String problemSizeDescription = "";  // TODO: fill in string appropriately
-	private static int problemSizeMin = 0;  // TODO: initialize appropriately (do not use 0)
-	private static int problemSizeCount = 0;  // TODO: initialize appropriately (do not use 0)
-	private static int problemSizeStep = 0;  // TODO: initialize appropriately (do not use 0)
+	private static String problemSizeDescription = "arrayListSize";  // TODO: fill in string appropriately
+	private static int problemSizeMin = 100;  // TODO: initialize appropriately (do not use 0)
+	private static int problemSizeCount = 100;  // TODO: initialize appropriately (do not use 0)
+	private static int problemSizeStep = 100;  // TODO: initialize appropriately (do not use 0)
 	private static int experimentIterationCount = 50;
 
 	private Facility randomFacility;
