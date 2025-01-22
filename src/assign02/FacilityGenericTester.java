@@ -78,6 +78,45 @@ public class FacilityGenericTester {
         //        generate names, IDs, and dates.)
     }
 
+
+    // addPaitent method tests --------------------------------------------------------
+    @Test
+    public void testAddPatient() {
+        FacilityGeneric<String> facility = new FacilityGeneric<>();
+        CurrentPatientGeneric<String> testPatient = new CurrentPatientGeneric("Mi", "Zeng", new UHealthID("ABCD-1234"), 7, new GregorianCalendar(2025, 1, 20));
+
+        assertTrue(facility.addPatient(testPatient)); // Adding a new patient should return true
+        assertFalse(facility.addPatient(testPatient)); // Adding the same patient again should return false
+    }
+
+    // addAll method tests --------------------------------------------------------
+    @Test
+    public void testAddAll() {
+        FacilityGeneric<Integer> facility = new FacilityGeneric<>();
+        ArrayList<CurrentPatientGeneric<Integer>> testPatients = new ArrayList<>();
+        testPatients.add(new CurrentPatientGeneric("A", "E", new UHealthID("ABCC-1235"), 7, new GregorianCalendar(2025, 1, 20)));
+        testPatients.add(new CurrentPatientGeneric("B", "F", new UHealthID("ABCF-1238"), 8, new GregorianCalendar(2025, 1, 21)));
+        testPatients.add(new CurrentPatientGeneric("C", "G", new UHealthID("ABCG-1239"), 9, new GregorianCalendar(2025, 1, 22)));
+        testPatients.add(new CurrentPatientGeneric("D", "H", new UHealthID("ABCH-1230"), 10, new GregorianCalendar(2025, 1, 23)));
+        facility.addAll(testPatients);
+        assertEquals(4, facility.getPhysicianList().size());
+
+    }
+
+    @Test
+    public void testAddAllRepeatPaitent() {
+        FacilityGeneric<Integer> facility = new FacilityGeneric<>();
+        ArrayList<CurrentPatientGeneric<Integer>> testPatients = new ArrayList<>();
+        testPatients.add(new CurrentPatientGeneric("A", "B", new UHealthID("ABCC-1235"), 7, new GregorianCalendar(2025, 1, 20)));
+        testPatients.add(new CurrentPatientGeneric("A", "B", new UHealthID("ABCC-1235"), 7, new GregorianCalendar(2025, 1, 20)));
+        testPatients.add(new CurrentPatientGeneric("C", "G", new UHealthID("ABCG-1239"), 7, new GregorianCalendar(2025, 1, 22)));
+        testPatients.add(new CurrentPatientGeneric("D", "H", new UHealthID("ABCH-1230"), 7, new GregorianCalendar(2025, 1, 23)));
+        facility.addAll(testPatients);
+        assertEquals(1, facility.getPhysicianList().size());
+    }
+//    
+
+
     // empty Facility tests --------------------------------------------------------
 
     @Test
@@ -109,6 +148,14 @@ public class FacilityGenericTester {
         assertEquals(0, patients.size());
     }
 
+    @Test
+    public void testEmptyAddPatient() {
+        CurrentPatientGeneric<Integer> newPatient = new CurrentPatientGeneric<>(
+                "Mi", "Zeng", new UHealthID("ABCD-8888"), 1234567, new GregorianCalendar(2025, 1, 22));
+        emptyFacility.addPatient(newPatient);
+        assertEquals(newPatient, emptyFacility.lookupByUHID(new UHealthID("ABCD-8888")));
+    }
+
     // uID Facility tests --------------------------------------------------------
 
     @Test
@@ -117,6 +164,7 @@ public class FacilityGenericTester {
         assertEquals(3, actualPatients.size());
     }
 
+
     @Test
     public void testUIDLookupPhysicianPatient() {
         Patient expectedPatient = new Patient(firstNames[1], lastNames[1], new UHealthID(uHIDs[1].toString()));
@@ -124,13 +172,14 @@ public class FacilityGenericTester {
         assertEquals(expectedPatient, actualPatients.get(0));
     }
 
-    // Add more tests
-//    @Test
-//    public void testUIDLookupByUHIDCount() {
-//        Patient expectedPatient = new Patient(firstNames)
-//        CurrentPatientGeneric<Integer> actualPatients = uIDFacility.lookupByUHID(uHIDs[0]);
-//        assertEquals();
-//    }
+
+    @Test
+    public void testUIDUpdateVisitDate() {
+        uIDFacility.setLastVisit(uHIDs[0], new GregorianCalendar(2025, 1, 20));
+        CurrentPatientGeneric<Integer> patient = uIDFacility.lookupByUHID(uHIDs[0]);
+        assertEquals(new GregorianCalendar(2025, 1, 20), patient.getLastVisit());
+    }
+
 
     // UHealthID facility tests ---------------------------------------------------
 
@@ -147,7 +196,15 @@ public class FacilityGenericTester {
         assertEquals(uHIDs[uHIDs.length - 1], patient.getPhysician());
     }
 
-    // Add more tests
+    @Test
+    void testLookupByUHID() {
+        FacilityGeneric<String> facility = new FacilityGeneric<>();
+        CurrentPatientGeneric<String> testPatient = new CurrentPatientGeneric("Mi", "Zeng", new UHealthID("ABCD-1234"), 7, new GregorianCalendar(2025, 1, 20));
+
+        facility.addPatient(testPatient);
+        assertEquals(testPatient, facility.lookupByUHID(new UHealthID("ABCD-1234")));
+        assertNull(facility.lookupByUHID(new UHealthID("BFCD-5678")));
+    }
 
     // name facility tests -------------------------------------------------------------------------
 
@@ -166,7 +223,17 @@ public class FacilityGenericTester {
         assertEquals(8, actual.size());
     }
 
-    // Add more tests
+    @Test
+    public void testNameAddAll() {
+        FacilityGeneric<String> facility = new FacilityGeneric<>();
+        ArrayList<CurrentPatientGeneric<String>> testPatients = new ArrayList<>();
+        testPatients.add(new CurrentPatientGeneric("A", "B", new UHealthID("ABCC-1235"), "A", new GregorianCalendar(2025, 1, 20)));
+        testPatients.add(new CurrentPatientGeneric("A", "B", new UHealthID("ABCC-1235"), "A", new GregorianCalendar(2025, 1, 20)));
+        testPatients.add(new CurrentPatientGeneric("C", "G", new UHealthID("ABCG-1239"), "A", new GregorianCalendar(2025, 1, 22)));
+        testPatients.add(new CurrentPatientGeneric("D", "H", new UHealthID("ABCH-1230"), "A", new GregorianCalendar(2025, 1, 23)));
+        facility.addAll(testPatients);
+        assertEquals(1, facility.getPhysicianList().size());
+    }
 
     // phase 3 tests ---------------------------------------------------------------------------
     // Uncomment these when you get to phase 3
@@ -186,7 +253,22 @@ public class FacilityGenericTester {
         assertEquals(new CurrentPatientGeneric<Integer>("R", "T", p3id4, 7, p3date4), actual.get(1));
     }
 
-    // Add more tests
+
+    @Test
+    public void testOrderedByDateCount() {
+        ArrayList<CurrentPatientGeneric<Integer>> actual = phase3Facility.getOrderedPatients(new OrderByDate<Integer>());
+        assertEquals(4, actual.size());
+    }
+
+    @Test
+    public void testOrderedByDateOrder() {
+        ArrayList<CurrentPatientGeneric<Integer>> actual = phase3Facility.getOrderedPatients(new OrderByDate<Integer>());
+        assertEquals(new CurrentPatientGeneric<Integer>("R", "T", p3id4, 7, p3date4), actual.get(0));
+        assertEquals(new CurrentPatientGeneric<Integer>("A", "C", p3id3, 7, p3date3), actual.get(1));
+        assertEquals(new CurrentPatientGeneric<Integer>("A", "B", p3id2, 7, p3date2), actual.get(2));
+        assertEquals(new CurrentPatientGeneric<Integer>("A", "B", p3id1, 7, p3date1), actual.get(3));
+    }
+
 
     // Private helper methods ---------------------------------------------------------------
 
