@@ -16,9 +16,9 @@ import timing.TimingExperiment;
  */
 public class FacilityLookupTimingExperiment extends TimingExperiment {
 	private static String problemSizeDescription = "arrayListSize";
-	private static int problemSizeMin = 100;
+	private static int problemSizeMin = 10000;
 	private static int problemSizeCount = 100;
-	private static int problemSizeStep = 100;
+	private static int problemSizeStep = 1000;
 	private static int experimentIterationCount = 50;
 
 	private Facility randomFacility;

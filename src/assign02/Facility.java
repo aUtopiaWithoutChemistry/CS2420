@@ -28,13 +28,38 @@ public class Facility {
      * @return true if the patient was added,
      * false if the patient was not added because they already exist in the record
      */
+//    public boolean addPatient(CurrentPatient patient) {
+//        if (patientList.contains(patient)) {
+//            return false;
+//        } else {
+//            patientList.add(patient);
+//            return true;
+//        }
+//    }
+
     public boolean addPatient(CurrentPatient patient) {
-        if (patientList.contains(patient)) {
-            return false;
-        } else {
+        if (patientList.isEmpty()) {
             patientList.add(patient);
-            return true;
+        } else {
+            int startIndex = 0;
+            int endIndex = patientList.size();
+            while (startIndex < endIndex) {
+                int middle = (startIndex + endIndex) / 2;
+                CurrentPatient targetPatient = patientList.get(middle);
+                if (patient.equals(targetPatient)) {
+                    return false;
+                } else if (patient.getLastVisit().equals(targetPatient.getLastVisit())) {
+                    patientList.add(middle, patient);
+                    return true;
+                } else if (patient.getLastVisit().before(targetPatient.getLastVisit())) {
+                    endIndex = middle - 1;
+                } else if (patient.getLastVisit().after(targetPatient.getLastVisit())) {
+                    startIndex = middle + 1;
+                }
+            }
+            patientList.add(startIndex, patient);
         }
+        return true;
     }
 
     /**
