@@ -23,19 +23,12 @@ public class Facility {
 
     /**
      * Adds the given patient to the list of patients, avoiding duplicates.
+     * Using bisection algorithm to make adding faster.
      *
      * @param patient - patient to be added to this record
      * @return true if the patient was added,
      * false if the patient was not added because they already exist in the record
      */
-//    public boolean addPatient(CurrentPatient patient) {
-//        if (patientList.contains(patient)) {
-//            return false;
-//        } else {
-//            patientList.add(patient);
-//            return true;
-//        }
-//    }
 
     public boolean addPatient(CurrentPatient patient) {
         if (patientList.isEmpty()) {
