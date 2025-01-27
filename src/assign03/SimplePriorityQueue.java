@@ -31,7 +31,7 @@ public class SimplePriorityQueue<E> implements PriorityQueue<E> {
 
     @Override
     public boolean contains(E item) {
-        return arr[binarySearch(item)].equals(item);
+        return count != 0 && arr[binarySearch(item)].equals(item);
     }
 
     @Override
@@ -72,8 +72,16 @@ public class SimplePriorityQueue<E> implements PriorityQueue<E> {
             arr = newArr;
         }
         int targetIndex = binarySearch(item);
-        for (int i = count - 1; i > targetIndex; i--) arr[i + 1] = arr[i];
-        arr[targetIndex] = item;
+        // if item is bigger than target, insert item after target
+        if (compare(item, arr[targetIndex]) > 0) {
+            for (int i = count - 1; i > targetIndex; i--) arr[i + 1] = arr[i];
+            arr[targetIndex + 1] = item;
+        }
+        // if item is smaller than target, insert item before target
+        else {
+            for (int i = count - 1; i >= targetIndex; i--) arr[i + 1] = arr[i];
+            arr[targetIndex] = item;
+        }
         count++;
     }
 
@@ -84,16 +92,15 @@ public class SimplePriorityQueue<E> implements PriorityQueue<E> {
 
     @Override
     public boolean isEmpty() {
-        return count == 0;
+        return this.size() == 0;
     }
 
     @Override
     public int size() {
-        return count;
-    }
-
-    public String toString() {
-        return Arrays.toString(arr);
+        if (count > 0 && arr[count - 1] != null)
+            return count;
+        else
+            return 0;
     }
 
     /**
@@ -104,7 +111,7 @@ public class SimplePriorityQueue<E> implements PriorityQueue<E> {
      */
     private int binarySearch(E item) {
         int startIndex = 0;
-        int endIndex = count;
+        int endIndex = count - 1;
         int centreIndex = -1;
         while (startIndex <= endIndex) {
             centreIndex = (startIndex + endIndex) / 2;
