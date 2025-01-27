@@ -1,21 +1,36 @@
 package assign03;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.NoSuchElementException;
 
+/**
+ * This is a generic class that store E type data in a certain order, natural ordering
+ * if it doesn't provide a customized Comparator. Using just array, without other data
+ * types that Java provides. Supports access of the maximum element only.
+ *
+ * @author Zifan Zuo and Xinrui Ou
+ * @version 2025-01-27
+ */
 public class SimplePriorityQueue<E> implements PriorityQueue<E> {
     private E[] arr;
     private int count;
     private Comparator cmp = null;
 
+    /**
+     * A default constructor, using the natural ordering to order the array
+     */
     @SuppressWarnings("unchecked")
     public SimplePriorityQueue() {
         arr = (E[]) new Object[10];
         count = 0;
     }
 
+    /**
+     * A customized constructor, by passing a Comparator object to the constructor.
+     *
+     * @param cmp a customized Comparator 
+     */
     @SuppressWarnings("unchecked")
     public SimplePriorityQueue(Comparator<? super E> cmp) {
         arr = (E[]) new Object[10];
