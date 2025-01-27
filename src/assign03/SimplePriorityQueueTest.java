@@ -13,13 +13,13 @@ import static org.junit.jupiter.api.Assertions.*;
 class SimplePriorityQueueTest {
 
     private SimplePriorityQueue<Integer> emptyQueue, smallQueue, bigQueue, reverseQueue, reverseBigQueue;
-    private ArrayList<Integer> testCollectionSmall, testCollectionBig, testCollectionAdd;
-    private int testSize = 100;
-    private Comparator<Integer> reverseCmp;
+    private ArrayList<Integer> testCollectionBig;
+    private ArrayList<Integer> testCollectionAdd;
+    private final int testSize = 100;
 
     @BeforeEach
-    void setUp() throws Exception{
-        reverseCmp = (Integer num1, Integer num2) -> num2 - num1;
+    void setUp() throws Exception {
+        Comparator<Integer> reverseCmp = (Integer num1, Integer num2) -> num2 - num1;
 
         emptyQueue = new SimplePriorityQueue<>();
         smallQueue = new SimplePriorityQueue<>();
@@ -27,7 +27,7 @@ class SimplePriorityQueueTest {
         reverseQueue = new SimplePriorityQueue<>(reverseCmp);
         reverseBigQueue = new SimplePriorityQueue<>(reverseCmp);
 
-        testCollectionSmall = new ArrayList<>();
+        ArrayList<Integer> testCollectionSmall = new ArrayList<>();
         testCollectionBig = new ArrayList<>();
         testCollectionAdd = new ArrayList<>();
 

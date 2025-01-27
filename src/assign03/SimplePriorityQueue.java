@@ -29,7 +29,7 @@ public class SimplePriorityQueue<E> implements PriorityQueue<E> {
     /**
      * A customized constructor, by passing a Comparator object to the constructor.
      *
-     * @param cmp a customized Comparator 
+     * @param cmp a customized Comparator
      */
     @SuppressWarnings("unchecked")
     public SimplePriorityQueue(Comparator<? super E> cmp) {
@@ -134,7 +134,7 @@ public class SimplePriorityQueue<E> implements PriorityQueue<E> {
             if (arr[centreIndex] == null || arr[centreIndex].equals(item)) break;
             // if item is greater than centre item, then search right half
             if (compare(item, arr[centreIndex]) > 0) startIndex = centreIndex + 1;
-            // if item is smaller than centre item, then search left half
+                // if item is smaller than centre item, then search left half
             else endIndex = centreIndex - 1;
         }
         return centreIndex;
