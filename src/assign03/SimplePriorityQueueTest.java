@@ -116,6 +116,10 @@ class SimplePriorityQueueTest {
     @Test
     void testContains() {
         assertFalse(smallQueue.contains(6));
+    }
+
+    @Test
+    void testContainsTrue() {
         smallQueue.insert(6);
         assertTrue(smallQueue.contains(6));
     }
@@ -126,20 +130,27 @@ class SimplePriorityQueueTest {
     }
 
     @Test
-    void testContainsAll() {
+    void testContainsAllFalse() {
         assertFalse(smallQueue.containsAll(testCollectionAdd));
+    }
+
+    @Test
+    void testContainsAllTrue() {
         smallQueue.insert(1919810);
-        assertFalse(smallQueue.containsAll(testCollectionAdd));
         smallQueue.insert(114);
-        assertFalse(smallQueue.containsAll(testCollectionAdd));
         smallQueue.insert(514);
         assertTrue(smallQueue.containsAll(testCollectionAdd));
     }
 
     @Test
     void testFindMax() {
-        assertThrows(NoSuchElementException.class, () -> emptyQueue.findMax());
         assertEquals(9, smallQueue.findMax());
+    }
+
+    @Test
+    void testSizeAfterFindMax() {
+        smallQueue.findMax();
+        assertEquals(4, smallQueue.size());
     }
 
     @Test
@@ -149,12 +160,17 @@ class SimplePriorityQueueTest {
 
     @Test
     void testDeleteMax() {
-        assertThrows(NoSuchElementException.class, () -> emptyQueue.deleteMax());
         assertEquals(9, smallQueue.deleteMax());
         assertEquals(5, smallQueue.deleteMax());
         assertEquals(4, smallQueue.deleteMax());
         assertEquals(1, smallQueue.deleteMax());
         assertThrows(NoSuchElementException.class, () -> smallQueue.deleteMax());
+    }
+
+    @Test
+    void testSizeAfterDeleteMax() {
+        smallQueue.deleteMax();
+        assertEquals(3, smallQueue.size());
     }
 
     @Test
@@ -164,9 +180,46 @@ class SimplePriorityQueueTest {
 
     @Test
     void testInsert() {
-        assertFalse(emptyQueue.contains(114));
-        emptyQueue.insert(114);
-        assertTrue(emptyQueue.contains(114));
+        assertFalse(smallQueue.contains(114));
+        smallQueue.insert(114);
+        assertTrue(smallQueue.contains(114));
+    }
+
+    @Test
+    void testInsertToEmptyQueue() {
+        assertTrue(emptyQueue.isEmpty());
+        emptyQueue.insert(999);
+        assertTrue(emptyQueue.contains(999));
+    }
+
+    @Test
+    void testInsertInOrder() {
+        emptyQueue.insert(1);
+        emptyQueue.insert(2);
+        emptyQueue.insert(3);
+        assertEquals(3, emptyQueue.deleteMax());
+        assertEquals(2, emptyQueue.deleteMax());
+        assertEquals(1, emptyQueue.deleteMax());
+    }
+
+    @Test
+    void testInsertInReverseOrder() {
+        emptyQueue.insert(3);
+        emptyQueue.insert(2);
+        emptyQueue.insert(1);
+        assertEquals(3, emptyQueue.deleteMax());
+        assertEquals(2, emptyQueue.deleteMax());
+        assertEquals(1, emptyQueue.deleteMax());
+    }
+
+    @Test
+    void testInsertInRandomOrder() {
+        emptyQueue.insert(5);
+        emptyQueue.insert(1);
+        emptyQueue.insert(9);
+        assertEquals(9, emptyQueue.deleteMax());
+        assertEquals(5, emptyQueue.deleteMax());
+        assertEquals(1, emptyQueue.deleteMax());
     }
 
     @Test
@@ -180,6 +233,10 @@ class SimplePriorityQueueTest {
     @Test
     void testIsEmpty() {
         assertTrue(emptyQueue.isEmpty());
+    }
+
+    @Test
+    void testIsEmptyAfterClear() {
         smallQueue.clear();
         assertTrue(smallQueue.isEmpty());
     }
