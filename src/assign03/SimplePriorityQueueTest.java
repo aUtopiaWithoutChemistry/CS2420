@@ -51,6 +51,21 @@ class SimplePriorityQueueTest {
     }
 
     @Test
+    void testGeneric() {
+        SimplePriorityQueue<String> stringQueue = new SimplePriorityQueue<>(
+                Comparator.comparingInt(String::length)
+        );
+        stringQueue.insert("woc");
+        stringQueue.insert("nitamade");
+        stringQueue.insert("2b");
+        stringQueue.insert("diulei");
+        assertEquals("nitamade", stringQueue.deleteMax());
+        assertEquals("diulei", stringQueue.deleteMax());
+        assertEquals("woc", stringQueue.deleteMax());
+        assertEquals("2b", stringQueue.deleteMax());
+    }
+
+    @Test
     void testSize() {
         assertEquals(4, smallQueue.size());
         assertEquals(4, reverseQueue.size());
