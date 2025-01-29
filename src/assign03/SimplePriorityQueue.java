@@ -114,8 +114,7 @@ public class SimplePriorityQueue<E> implements PriorityQueue<E> {
     public int size() {
         if (count > 0 && arr[count - 1] != null)
             return count;
-        else
-            return 0;
+        return 0;
     }
 
     /**
