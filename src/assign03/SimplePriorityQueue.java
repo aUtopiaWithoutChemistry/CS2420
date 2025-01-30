@@ -92,7 +92,7 @@ public class SimplePriorityQueue<E> implements PriorityQueue<E> {
             for (int i = count - 1; i > targetIndex; i--) arr[i + 1] = arr[i];
             arr[targetIndex + 1] = item;
         }
-        // if item is smaller than target, insert item before target
+        // if item is smaller than or equal to target, insert item before target
         else {
             for (int i = count - 1; i >= targetIndex; i--) arr[i + 1] = arr[i];
             arr[targetIndex] = item;
