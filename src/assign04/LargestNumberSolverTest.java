@@ -8,6 +8,12 @@ import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Test class for LargestNumberSolver.
+ *
+ * @author Zifan Zuo and Xinrui Ou
+ * @version 2025-02-04
+ */
 class LargestNumberSolverTest {
     private Integer[] testArr1, testArr2, testArrEmpty, testArrSmall, testArrBig;
     private ArrayList<Integer> bigArrItems;

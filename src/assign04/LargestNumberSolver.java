@@ -5,6 +5,13 @@ import java.io.FileNotFoundException;
 import java.math.BigInteger;
 import java.util.*;
 
+/**
+ * This class provides some static methods dealing with arrays of Integer, to
+ * find the largest number it can form and other operations related.
+ *
+ * @author Zifan Zuo and Xinrui Ou
+ * @version 2025-02-04
+ */
 public class LargestNumberSolver {
     /**
      * insertion sorting by a given comparator, this method will change
@@ -84,9 +91,9 @@ public class LargestNumberSolver {
      * will throw an OutOfRangeException.
      *
      * @param arr an array contains Integer
+     * @return an integer version of largest number can be form by the given array.
      * @throws OutOfRangeException if the number of BigInteger larger than the max value
      *                             of integer primitive type.
-     * @return an integer version of largest number can be form by the given array.
      */
     public static int findLargestInt(Integer[] arr) {
         BigInteger target = LargestNumberSolver.findLargestNumber(arr);
@@ -100,9 +107,9 @@ public class LargestNumberSolver {
      * will throw an OutOfRangeException.
      *
      * @param arr an array contains Integer
+     * @return an long integer version of largest number can be form by the given array.
      * @throws OutOfRangeException if the number of BigInteger larger than the max value
      *                             of long integer primitive type.
-     * @return an long integer version of largest number can be form by the given array.
      */
     public static long findLargestLong(Integer[] arr) {
         BigInteger target = LargestNumberSolver.findLargestNumber(arr);
@@ -111,23 +118,29 @@ public class LargestNumberSolver {
     }
 
     /**
+     * To sum up the BigIntegers of given list of Integer arrays and return the result
+     * in form of BigInteger
      *
-     * @param list
-     * @return
+     * @param list a list of Integer arrays
+     * @return the sum of BigIntegers made by given Integer arrays
      */
     public static BigInteger sum(List<Integer[]> list) {
-        BigInteger sum = new BigInteger(" 0");
+        BigInteger sum = new BigInteger("0");
         for (Integer[] integerArr : list) sum = sum.add(LargestNumberSolver.findLargestNumber(integerArr));
         return sum;
     }
 
     /**
+     * To find the kth largest BigInteger that Integer arrays, in given List, can form, and
+     * return the original Integer array of the kth largest BigInteger.
      *
-     * @param list
-     * @param k
-     * @return
+     * @param list a list of Integer arrays
+     * @param k    the kth largest item
+     * @return the Integer array that can form the kth largest number.
+     * @throws IllegalArgumentException if the input index is larger than the given List
      */
     public static Integer[] findKthLargest(List<Integer[]> list, int k) {
+        if (k > list.size() - 1) throw new IllegalArgumentException();
         // find BigInteger for each Integer array and
         // make a 2d array of BigInteger , [BigInteger, index in the original list]
         BigInteger[][] arr = new BigInteger[list.size()][2];
@@ -136,16 +149,18 @@ public class LargestNumberSolver {
             arr[i][1] = new BigInteger(String.valueOf(i));
         }
         // sort the 2d array by the biginteger stored in it's first place
-        Arrays.sort(arr, Comparator.comparing(item -> item[0]));
+        LargestNumberSolver.insertionSort(arr, Comparator.comparing(item -> item[0]));
         // find the array.length - k's place, and get the index of it's integer list
         // return the integer array at that list
         return list.get(arr[arr.length - 1 - k][1].intValue());
     }
 
     /**
+     * To read a file that contains lines of number seperated by spaces,
+     * put those numbers into Integer arrays, and store in a List.
      *
-     * @param filename
-     * @return
+     * @param filename the path of the file
+     * @return a List of Integer array
      */
     public static List<Integer[]> readFile(String filename) {
         File file = new File(filename);
@@ -158,10 +173,10 @@ public class LargestNumberSolver {
         }
         while (scanner.hasNextLine()) {
             String string = scanner.next();
-            String[] stringArray =string.split(" ");
+            String[] stringArray = string.split(" ");
             Integer[] integers = new Integer[stringArray.length];
-            for( int i = 0; i<stringArray.length;i++){
-                integers[i]= Integer.parseInt(stringArray[i]);
+            for (int i = 0; i < stringArray.length; i++) {
+                integers[i] = Integer.parseInt(stringArray[i]);
             }
             list.add(integers);
         }
