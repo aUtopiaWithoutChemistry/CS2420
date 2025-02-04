@@ -79,9 +79,13 @@ public class LargestNumberSolver {
             }
             return 0;
         };
+        // if the array length is 0 or 1, which doesn't have enough items to compare,
+        // then return 0 for length 0, the only number for length 1.
+        if (arr.length == 0) return new BigInteger("0");
+        if (arr.length == 1) return new BigInteger(arr[0].toString());
         Integer[] newArr = new Integer[arr.length];
         System.arraycopy(arr, 0, newArr, 0, arr.length);
-        insertionSort(newArr, cmp);
+        LargestNumberSolver.insertionSort(newArr, cmp);
         return new BigInteger(makeNumberString(newArr));
     }
 
