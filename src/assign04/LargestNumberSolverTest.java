@@ -99,12 +99,12 @@ class LargestNumberSolverTest {
 
     @Test
     void testFindLargestInt() {
-        assertEquals(87, LargestNumberSolver.findLargestInt(testArr2));
+        assertEquals(87744321, LargestNumberSolver.findLargestInt(testArr2));
     }
 
     @Test
     void testFindLargestLong() {
-        assertEquals((long)87, LargestNumberSolver.findLargestLong(testArr2));
+        assertEquals((long)87744321, LargestNumberSolver.findLargestLong(testArr2));
     }
 
     @Test
@@ -117,4 +117,9 @@ class LargestNumberSolverTest {
         assertEquals(testArr1,LargestNumberSolver.findKthLargest(lists,1));
     }
 
+    @Test
+    void testReadFile() {
+        List<Integer[]> list = LargestNumberSolver.readFile("/Users/lama/Library/Mobile Documents/com~apple~CloudDocs/MyUofU/2025 Spring/CS2420/CS2420/src/assign04/integers.txt");
+        assertEquals(410, list.get(0)[0]);
+    }
 }
