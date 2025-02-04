@@ -1,16 +1,17 @@
 package assign04;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 public class LargestNumberSolver {
     /**
+     * insertion sorting by a given comparator, this method will change
+     * the original array.
      *
-     * @param arr
-     * @param cmp
-     * @param <T>
+     * @param arr array to be sorted
+     * @param cmp a customized comparator
      */
     public static <T> void insertionSort(T[] arr, Comparator<? super T> cmp) {
         // loop over every item in the array
@@ -33,9 +34,11 @@ public class LargestNumberSolver {
     }
 
     /**
+     * to find the largest number that given array can form, and return that number
+     * in BigInteger format.
      *
-     * @param arr
-     * @return
+     * @param arr an array contains Integer
+     * @return the largest BigInteger that numbers in given array can form
      */
     public static BigInteger findLargestNumber(Integer[] arr) {
         Comparator<Integer> cmp = (Integer x1, Integer x2) -> {
@@ -54,10 +57,10 @@ public class LargestNumberSolver {
                 // when the number at the first index is different
                 if (array1.get(0) > array2.get(0)) return -1;
                 else if (array1.get(0) < array2.get(0)) return 1;
-                // when the number at the first index is same and both number have only one digit
+                    // when the number at the first index is same and both number have only one digit
                 else if (array1.get(0).equals(array2.get(0)) && array2.size() == 1 && array1.size() == 1) return 0;
-                // when the number at the first index is tie and at least one number have more
-                // than one digit.
+                    // when the number at the first index is tie and at least one number have more
+                    // than one digit.
                 else {
                     if (array1.size() == 1) array1.add(array1.get(0));
                     else if (array2.size() == 1) array2.add(array2.get(0));
@@ -75,24 +78,94 @@ public class LargestNumberSolver {
         return new BigInteger(makeNumberString(newArr));
     }
 
+    /**
+     * to find the largest number that given array can form, and turn it into integer,
+     * if this BigInteger is bigger than the max value of integer type can carry, it
+     * will throw an OutOfRangeException.
+     *
+     * @param arr an array contains Integer
+     * @throws OutOfRangeException if the number of BigInteger larger than the max value
+     *                             of integer primitive type.
+     * @return an integer version of largest number can be form by the given array.
+     */
     public static int findLargestInt(Integer[] arr) {
-        return 0;
+        BigInteger target = LargestNumberSolver.findLargestNumber(arr);
+        if (target.compareTo(BigInteger.valueOf(Integer.MAX_VALUE)) > 0) throw new OutOfRangeException("int");
+        return target.intValue();
     }
 
+    /**
+     * to find the largest number that given array can form, and turn it into long integer,
+     * if this BigInteger is bigger than the max value of long integer type can carry, it
+     * will throw an OutOfRangeException.
+     *
+     * @param arr an array contains Integer
+     * @throws OutOfRangeException if the number of BigInteger larger than the max value
+     *                             of long integer primitive type.
+     * @return an long integer version of largest number can be form by the given array.
+     */
     public static long findLargestLong(Integer[] arr) {
-        return 0;
+        BigInteger target = LargestNumberSolver.findLargestNumber(arr);
+        if (target.compareTo(BigInteger.valueOf(Long.MAX_VALUE)) > 0) throw new OutOfRangeException("Long");
+        return target.longValue();
     }
 
+    /**
+     *
+     * @param list
+     * @return
+     */
     public static BigInteger sum(List<Integer[]> list) {
-        return null;
+        BigInteger sum = new BigInteger(" 0");
+        for (Integer[] integerArr : list) sum = sum.add(LargestNumberSolver.findLargestNumber(integerArr));
+        return sum;
     }
 
+    /**
+     *
+     * @param list
+     * @param k
+     * @return
+     */
     public static Integer[] findKthLargest(List<Integer[]> list, int k) {
-        return null;
+        // find BigInteger for each Integer array and
+        // make a 2d array of BigInteger , [BigInteger, index in the original list]
+        BigInteger[][] arr = new BigInteger[list.size()][2];
+        for (int i = 0; i < list.size(); i++) {
+            arr[i][0] = LargestNumberSolver.findLargestNumber(list.get(i));
+            arr[i][1] = new BigInteger(String.valueOf(i));
+        }
+        // sort the 2d array by the biginteger stored in it's first place
+        Arrays.sort(arr, Comparator.comparing(item -> item[0]));
+        // find the array.length - k's place, and get the index of it's integer list
+        // return the integer array at that list
+        return list.get(arr[arr.length - 1 - k][1].intValue());
     }
 
+    /**
+     *
+     * @param filename
+     * @return
+     */
     public static List<Integer[]> readFile(String filename) {
-        return null;
+        File file = new File(filename);
+        List<Integer[]> list = new ArrayList<>();
+        Scanner scanner;
+        try {
+            scanner = new Scanner(file);
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        while (scanner.hasNextLine()) {
+            String string = scanner.next();
+            String[] stringArray =string.split(" ");
+            Integer[] integers = new Integer[stringArray.length];
+            for( int i = 0; i<stringArray.length;i++){
+                integers[i]= Integer.parseInt(stringArray[i]);
+            }
+            list.add(integers);
+        }
+        return list;
     }
 
     /**
