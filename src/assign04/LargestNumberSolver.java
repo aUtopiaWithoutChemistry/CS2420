@@ -176,7 +176,7 @@ public class LargestNumberSolver {
             throw new RuntimeException(e);
         }
         while (scanner.hasNextLine()) {
-            String string = scanner.next();
+            String string = scanner.nextLine();
             String[] stringArray = string.split(" ");
             Integer[] integers = new Integer[stringArray.length];
             for (int i = 0; i < stringArray.length; i++) {
