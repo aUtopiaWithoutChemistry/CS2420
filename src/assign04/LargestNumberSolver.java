@@ -49,8 +49,8 @@ public class LargestNumberSolver {
      */
     public static BigInteger findLargestNumber(Integer[] arr) {
         Comparator<Integer> cmp = (Integer x1, Integer x2) -> {
-            ArrayList<Integer> array1 = new ArrayList<>();
-            ArrayList<Integer> array2 = new ArrayList<>();
+            List<Integer> array1 = new ArrayList<>();
+            List<Integer> array2 = new ArrayList<>();
             // get every digit in x1 and x2
             while (x1 > 0) {
                 array1.add(0, x1 % 10);
@@ -72,8 +72,8 @@ public class LargestNumberSolver {
                     if (array1.size() == 1) array1.add(array1.get(0));
                     else if (array2.size() == 1) array2.add(array2.get(0));
                     else {
-                        array1.removeFirst();
-                        array2.removeFirst();
+                        array1.remove(0);
+                        array2.remove(0);
                     }
                 }
             }
