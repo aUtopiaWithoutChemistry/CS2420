@@ -240,7 +240,13 @@ class LargestNumberSolverTest {
 
     @Test
     void testReadFile() {
-        List<Integer[]> list = LargestNumberSolver.readFile("/Users/lama/Library/Mobile Documents/com~apple~CloudDocs/MyUofU/2025 Spring/CS2420/CS2420/src/assign04/integers.txt");
+        List<Integer[]> list = LargestNumberSolver.readFile("src/assign04/integers.txt");
         assertEquals(410, list.get(0)[0]);
+    }
+
+    @Test
+    void testReadFileTotalLines() {
+        List<Integer[]> list = LargestNumberSolver.readFile("src/assign04/integers.txt");
+        assertEquals(903, list.size());
     }
 }
