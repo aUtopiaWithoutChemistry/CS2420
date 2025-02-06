@@ -11,12 +11,12 @@ import java.util.Comparator;
  * @author CS 2420 course staff
  * @version January 23, 2025
  */
-public class InsertionSortWorstCaseTimingExperiment extends TimingExperiment {
+public class InsertionSortBestCaseTimingExperiment extends TimingExperiment {
 
     private static final String problemSizeDescription = "Array size";
-    private static final int problemSizeMin = 100;
+    private static final int problemSizeMin = 10000;
     private static final int problemSizeCount = 100;
-    private static final int problemSizeStep = 100;
+    private static final int problemSizeStep = 10000;
     private static final int experimentIterationCount = 20;
 
     public Integer[] array;
@@ -25,12 +25,12 @@ public class InsertionSortWorstCaseTimingExperiment extends TimingExperiment {
     /**
      * Constructs a general timing experiment.
      */
-    public InsertionSortWorstCaseTimingExperiment() {
+    public InsertionSortBestCaseTimingExperiment() {
         super(problemSizeDescription, problemSizeMin, problemSizeCount, problemSizeStep, experimentIterationCount);
     }
 
     public static void main(String[] args) {
-        TimingExperiment timingExperiment = new InsertionSortWorstCaseTimingExperiment();
+        TimingExperiment timingExperiment = new InsertionSortBestCaseTimingExperiment();
 
         System.out.println("\n---Computing timing results---\n");
         timingExperiment.printResults();
@@ -44,7 +44,7 @@ public class InsertionSortWorstCaseTimingExperiment extends TimingExperiment {
     @Override
     protected void setupExperiment(int problemSize) {
         // initialize the arr
-        array = ArrayGenerator.generateDescendingArray(problemSize);
+        array = ArrayGenerator.generateNearlyAscendingArray(problemSize);
     }
 
     /**

@@ -11,7 +11,7 @@ import java.util.Comparator;
  * @author CS 2420 course staff
  * @version January 23, 2025
  */
-public class InsertionSortWorstCaseTimingExperiment extends TimingExperiment {
+public class InsertionSortAverageCaseTimingExperiment extends TimingExperiment {
 
     private static final String problemSizeDescription = "Array size";
     private static final int problemSizeMin = 100;
@@ -25,12 +25,12 @@ public class InsertionSortWorstCaseTimingExperiment extends TimingExperiment {
     /**
      * Constructs a general timing experiment.
      */
-    public InsertionSortWorstCaseTimingExperiment() {
+    public InsertionSortAverageCaseTimingExperiment() {
         super(problemSizeDescription, problemSizeMin, problemSizeCount, problemSizeStep, experimentIterationCount);
     }
 
     public static void main(String[] args) {
-        TimingExperiment timingExperiment = new InsertionSortWorstCaseTimingExperiment();
+        TimingExperiment timingExperiment = new InsertionSortAverageCaseTimingExperiment();
 
         System.out.println("\n---Computing timing results---\n");
         timingExperiment.printResults();
@@ -44,7 +44,7 @@ public class InsertionSortWorstCaseTimingExperiment extends TimingExperiment {
     @Override
     protected void setupExperiment(int problemSize) {
         // initialize the arr
-        array = ArrayGenerator.generateDescendingArray(problemSize);
+        array = ArrayGenerator.generatePermutedArray(problemSize);
     }
 
     /**
