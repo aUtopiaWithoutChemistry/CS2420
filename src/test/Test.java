@@ -3,10 +3,15 @@ package test;
 import java.util.ArrayList;
 
 public class Test {
+    private static void updateArray(int[] arr) {
+        arr = new int[arr.length];
+        for(int i = 0; i < arr.length; i++)
+            arr[i]++;
+    }
+
     public static void main(String[] args) {
-        ArrayList<Integer> arr = new ArrayList<>();
-        arr.add(1);
-        arr.add(arr.size(), 4);
-        System.out.println(arr);
+        int[] values = { 1, 2, 3, 4, 5 };
+        updateArray(values);
+        System.out.print(values[4]);
     }
 }
