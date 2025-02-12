@@ -9,7 +9,7 @@ import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class MergeSorterTester {
+class SorterTest {
     private ArrayList<Integer> array, sortedArray, arraySmall;
 
     @BeforeEach
@@ -54,6 +54,30 @@ class MergeSorterTester {
     @Test
     void testMergeSort() {
         MergeSorter sorter = new MergeSorter<>(99);
+        sorter.sort(array);
+        System.out.println(array);
+        System.out.println(array.size());
+        for (int i = 0; i < array.size(); i++) {
+            assertEquals(sortedArray.get(i), array.get(i));
+        }
+    }
+
+    @Test
+    void testQuickSortSmall() {
+        QuickSorter<Integer> sorter = new QuickSorter<>(new RandomPivotChooser<Integer>());
+        sorter.sort(arraySmall);
+        System.out.println(arraySmall);
+        assertEquals(1, arraySmall.get(0));
+        assertEquals(3, arraySmall.get(1));
+        assertEquals(4, arraySmall.get(2));
+        assertEquals(5, arraySmall.get(3));
+        assertEquals(6, arraySmall.get(4));
+        assertEquals(8, arraySmall.get(5));
+    }
+
+    @Test
+    void testQuickSort() {
+        QuickSorter<Integer> sorter = new QuickSorter<>(new MedianOfThreePivotChooser<Integer>());
         sorter.sort(array);
         System.out.println(array);
         System.out.println(array.size());
