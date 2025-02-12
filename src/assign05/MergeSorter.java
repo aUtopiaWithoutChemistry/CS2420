@@ -25,9 +25,7 @@ public class MergeSorter<E extends Comparable<? super E>> implements Sorter<E> {
 
     private void mergeSortRecursive(int startIndex, int endIndex) {
         // base case
-        if (endIndex - startIndex < threshold) {
-            insertionSort(startIndex, endIndex);
-        }
+        if (endIndex - startIndex < threshold) insertionSort(startIndex, endIndex);
         // recursive call
         else {
             int centerIndex = startIndex + (endIndex - startIndex) / 2;
