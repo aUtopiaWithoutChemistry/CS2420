@@ -10,10 +10,16 @@ public class MergeSorter<E extends Comparable<? super E>> implements Sorter<E> {
     private int threshold;
     private ArrayList<E> backingArrayPreviousSorted, backingArrayWorking;
 
+    /**
+     * the constructor for MergeSorter, set the threshold for change to insertion sort.
+     *
+     * @param threshold when below threshold value, will change to insertion sort
+     */
     public MergeSorter(int threshold) {
         if (threshold <= 0) throw new IllegalArgumentException();
         this.threshold = threshold;
     }
+
 
     @Override
     public void sort(ArrayList<E> list) {
@@ -23,6 +29,12 @@ public class MergeSorter<E extends Comparable<? super E>> implements Sorter<E> {
         mergeSortRecursive(0, list.size() - 1);
     }
 
+    /**
+     * the recursive method of MergeSorter.
+     *
+     * @param startIndex the start index of current sub array
+     * @param endIndex the end index of current sub array
+     */
     private void mergeSortRecursive(int startIndex, int endIndex) {
         // base case
         if (endIndex - startIndex <= threshold) insertionSort(startIndex, endIndex);
@@ -66,7 +78,13 @@ public class MergeSorter<E extends Comparable<? super E>> implements Sorter<E> {
         }
     }
 
-    public void insertionSort(int startIndex, int endIndex) {
+    /**
+     * a private helper method to do insertion sort on backing array
+     *
+     * @param startIndex the start index of the array to be sorted
+     * @param endIndex the end index of the array to be sorted
+     */
+    private void insertionSort(int startIndex, int endIndex) {
         for (int i = startIndex + 1; i <= endIndex; i++) {
             int j = i - 1;
             boolean swapped = false;

@@ -10,6 +10,11 @@ public class QuickSorter<E extends Comparable<? super E>> implements Sorter<E>{
     private final PivotChooser<E> chooser;
     private ArrayList<E> list;
 
+    /**
+     * The constructor for QuickSorter, set up the chooser for this sorter.
+     *
+     * @param chooser the specific chooser for this QuickSorter
+     */
     public QuickSorter(PivotChooser<E> chooser) {
         this.chooser = chooser;
     }
@@ -20,6 +25,13 @@ public class QuickSorter<E extends Comparable<? super E>> implements Sorter<E>{
         quickSorterRecur(chooser, 0, list.size() - 1);
     }
 
+    /**
+     * the recursive method of quicksort.
+     *
+     * @param chooser the pivot chooser of this sorter
+     * @param startIndex the start index of the sub array
+     * @param endIndex the end index of the sub array
+     */
     private void quickSorterRecur(PivotChooser<E> chooser, int startIndex, int endIndex) {
         // base case
         if (endIndex - startIndex < 1) return;
@@ -42,6 +54,12 @@ public class QuickSorter<E extends Comparable<? super E>> implements Sorter<E>{
         quickSorterRecur(chooser, i + 1, endIndex);
     }
 
+    /**
+     * a private helper method to swap item on two different index.
+     *
+     * @param firstIndex the first index of the item to be swapped
+     * @param secondIndex the second index of the item to be swapped
+     */
     private void swap(int firstIndex, int secondIndex) {
         E temp = list.get(secondIndex);
         list.set(secondIndex, list.get(firstIndex));
