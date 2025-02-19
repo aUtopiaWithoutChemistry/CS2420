@@ -48,12 +48,8 @@ public class ArrayListGenerator {
      * @param problemSize - size of the array
      */
     public static ArrayList<Integer> generateDescendingArray(int problemSize) {
-        ArrayList<Integer> array = new ArrayList<>();
-        int currentElement = rng.nextInt(20);
-        for(int i = 0; i < problemSize; i++) {
-            array.add(0, currentElement);
-            currentElement += rng.nextInt(10);
-        }
+        ArrayList<Integer> array = generateAscendingArray(problemSize);
+        Collections.sort(array, (int1, int2) -> int2 - int1);
         return array;
     }
 

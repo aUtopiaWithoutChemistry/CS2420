@@ -7,10 +7,10 @@ import java.util.ArrayList;
 public class MergeSortDescendingTimingExperiment extends TimingExperiment {
     protected static int threshold = 20;
     private static final String problemSizeDescription = "Array size";
-    private static final int problemSizeMin = 10000;
-    private static final int problemSizeCount = 100;
-    private static final int problemSizeStep = 10000;
-    private static final int experimentIterationCount = 50;
+    private static final int problemSizeMin = 5000;
+    private static final int problemSizeCount = 50;
+    private static final int problemSizeStep = 5000;
+    private static final int experimentIterationCount = 20;
     public ArrayList<Integer> list;
 
     /**
