@@ -25,7 +25,7 @@ public class MergeSorter<E extends Comparable<? super E>> implements Sorter<E> {
 
     private void mergeSortRecursive(int startIndex, int endIndex) {
         // base case
-        if (endIndex - startIndex < threshold) insertionSort(startIndex, endIndex);
+        if (endIndex - startIndex <= threshold) insertionSort(startIndex, endIndex);
         // recursive call
         else {
             int centerIndex = startIndex + (endIndex - startIndex) / 2;
@@ -40,7 +40,7 @@ public class MergeSorter<E extends Comparable<? super E>> implements Sorter<E> {
             while (i <= centerIndex && j <= endIndex) {
                 E first = backingArrayPreviousSorted.get(i);
                 E second = backingArrayPreviousSorted.get(j);
-                if (first.compareTo(second) < 0) {
+                if (first.compareTo(second) <= 0) {
                     backingArrayWorking.set(insertIndex, first);
                     i++;
                 } else {

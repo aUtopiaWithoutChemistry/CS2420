@@ -1,5 +1,7 @@
 package test;
 
+import java.util.ArrayList;
+
 public class Test {
     public static int MCSS(int[] arr){
         int max = Integer.MIN_VALUE;
@@ -16,7 +18,14 @@ public class Test {
     }
 
     public static void main(String[] args) {
-        int[] arr = new int[]{-1, 10, -2, 13, -21, 9, -5, 16};
-        System.out.println(MCSS(arr));
+        ArrayList<Integer> list = new ArrayList<>();
+        list.add(3);
+        list.add(5);
+        list.add(7);
+        ArrayList<Integer> array = (ArrayList<Integer>) list.clone();
+        System.out.println(array);
+        list.remove(0);
+        System.out.println(list);
+        System.out.println(array);
     }
 }

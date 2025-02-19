@@ -5,12 +5,12 @@ import timing.TimingExperiment;
 import java.util.ArrayList;
 
 public class QuickSortShuffledTimingExperiment extends TimingExperiment {
-    protected static MedianOfThreePivotChooser<Integer> pivotChooser = new MedianOfThreePivotChooser<>();
+    protected static PivotChooser<Integer> pivotChooser = new MedianOfThreePivotChooser<>();
     private static final String problemSizeDescription = "Array size";
     private static final int problemSizeMin = 10000;
-    private static final int problemSizeCount = 100;
+    private static final int problemSizeCount = 50;
     private static final int problemSizeStep = 10000;
-    private static final int experimentIterationCount = 50;
+    private static final int experimentIterationCount = 20;
     public ArrayList<Integer> list;
 
     /**

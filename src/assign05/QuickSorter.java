@@ -32,7 +32,7 @@ public class QuickSorter<E extends Comparable<? super E>> implements Sorter<E>{
         int j = endIndex - 1;
         while (i <= j) {
             // if item at i is bigger than pivot and item at j is smaller than pivot then swap
-            if (list.get(i).compareTo(pivot) <= 0) i++;
+            if (list.get(i).compareTo(pivot) < 0) i++;
             else if(list.get(j).compareTo(pivot) >= 0) j--;
             else swap(i, j);
         }
