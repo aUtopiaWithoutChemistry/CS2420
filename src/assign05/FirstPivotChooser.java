@@ -9,6 +9,7 @@ import java.util.ArrayList;
 public class FirstPivotChooser<E extends Comparable<? super E>> implements PivotChooser<E>{
     @Override
     public int getPivotIndex(ArrayList<E> list, int leftIndex, int rightIndex) {
+        if (leftIndex >= rightIndex) throw new IndexOutOfBoundsException();
         return leftIndex;
     }
 }

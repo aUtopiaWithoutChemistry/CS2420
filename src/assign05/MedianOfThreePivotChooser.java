@@ -10,6 +10,7 @@ import java.util.Comparator;
 public class MedianOfThreePivotChooser<E extends Comparable<? super E>> implements PivotChooser<E>{
     @Override
     public int getPivotIndex(ArrayList<E> list, int leftIndex, int rightIndex) {
+        if (leftIndex >= rightIndex) throw new IndexOutOfBoundsException();
         ArrayList<Integer> itemsIndex = new ArrayList<>();
         itemsIndex.add(leftIndex);
         itemsIndex.add(rightIndex);
