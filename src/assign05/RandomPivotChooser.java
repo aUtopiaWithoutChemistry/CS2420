@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Random;
 
 /**
+ * An implementation of Pivot chooser, to choose a random index from the subarray,
+ * and return this index as pivot.
+ *
  * @author Zifan Zuo and Xinrui Ou
  * @version 2025-02-06
  */

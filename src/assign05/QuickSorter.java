@@ -3,6 +3,9 @@ package assign05;
 import java.util.ArrayList;
 
 /**
+ * An implementation of quicksort, by using the specific pivot chooser when
+ * calling the quicksort constructor.
+ *
  * @author Zifan Zuo and Xinrui Ou
  * @version 2025-02-06
  */
