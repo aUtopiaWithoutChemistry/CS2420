@@ -193,6 +193,7 @@ public class SinglyLinkedList <T> implements List<T>{
 
         @Override
         public void remove() {
+            if (count == 0) throw new UnsupportedOperationException("remove");
             if (!hasCalledNext) throw new IllegalStateException();
             else if (deleteIndex == 0) {
                 head = head.next;
@@ -200,6 +201,7 @@ public class SinglyLinkedList <T> implements List<T>{
                 // deletePointer.next is point to the item before the item to be removed
                 deletePointer.next.next = deletePointer.next.next.next;
             }
+            hasCalledNext = false;
             deleteIndex--;
             count--;
         }

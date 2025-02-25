@@ -485,6 +485,20 @@ class SinglyLinkedListTest {
     }
 
     @Test
+    void testIteratorRemoveItemFromEmpty() {
+        Iterator<Integer> myIterator = emptyList.iterator();
+        assertThrows(UnsupportedOperationException.class, () -> myIterator.remove());
+    }
+
+    @Test
+    void testIteratorRemoveTwiceFromSmall() {
+        Iterator<Integer> myIterator = smallList.iterator();
+        myIterator.next();
+        myIterator.remove();
+        assertThrows(IllegalStateException.class, () -> myIterator.remove());
+    }
+
+    @Test
     void testIteratorRemoveElementGeneric() {
         Iterator<Character> myIterator = charList.iterator();
         myIterator.next();
