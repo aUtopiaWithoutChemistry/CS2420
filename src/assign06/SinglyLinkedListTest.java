@@ -520,18 +520,65 @@ class SinglyLinkedListTest {
     }
 
     @Test
-    void testIteratorRemoveFiveElementsRemoveMiddle() {
-        emptyList.insertFirst(1);
-        emptyList.insertFirst(3);
-        emptyList.insertFirst(5);
-        emptyList.insertFirst(7);
-        emptyList.insertFirst(9);
-        Iterator<Integer> myIterator = emptyList.iterator();
-        myIterator.next();
-        myIterator.next();
-        myIterator.next();
-        assertEquals(3, myIterator.next());
+    void testIteratorRemoveSmallRemoveMiddle() {
+        Iterator<Integer> myIterator = smallList.iterator();
+        assertEquals(1, myIterator.next());
+        assertEquals(9, myIterator.next());
+        assertEquals(5, myIterator.next());
         myIterator.remove();
-        assertArrayEquals(new Integer[]{9, 7, 5, 1}, emptyList.toArray());
+        assertArrayEquals(new Integer[]{1, 9, 7}, smallList.toArray());
+    }
+
+    @Test
+    void testIteratorRemoveSmallLast() {
+        Iterator<Integer> myIterator = smallList.iterator();
+        for(int i = 0; i < 4; i++) {
+            myIterator.next();
+        }
+        myIterator.remove();
+        assertArrayEquals(new Integer[]{1, 9, 5}, smallList.toArray());
+    }
+
+    @Test
+    void testIteratorRemoveMultipleSmall() {
+        Iterator<Integer> myIterator = smallList.iterator();
+        myIterator.next();
+        myIterator.remove();
+        myIterator.next();
+        myIterator.next();
+        myIterator.next();
+        myIterator.remove();
+        assertArrayEquals(new Integer[]{9, 5}, smallList.toArray());
+    }
+
+    @Test
+    void testIteratorRemoveAllSmall() {
+        Iterator<Integer> myIterator = smallList.iterator();
+        for (int i = 0; i < 4; i++) {
+            myIterator.next();
+            myIterator.remove();
+        }
+        assertArrayEquals(new Integer[0], smallList.toArray());
+    }
+
+    @Test
+    void testIteratorSmallNextAndRemove() {
+        Iterator<Integer> iterator = smallList.iterator();
+        while(iterator.hasNext()) {
+            Integer value = iterator.next();
+            if(value % 3 == 0)
+                iterator.remove();
+        }
+        assertArrayEquals(new Integer[]{1, 5, 7}, smallList.toArray());
+    }
+
+    @Test
+    void testIteratorLargeNextAndRemove() {
+        Iterator<Integer> iterator = largeList.iterator();
+        while(iterator.hasNext()) {
+            Integer value = iterator.next();
+            if(value % 2 == 0)
+                iterator.remove();
+        }
     }
 }
