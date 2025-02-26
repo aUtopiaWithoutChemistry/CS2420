@@ -165,26 +165,28 @@ public class SinglyLinkedList <T> implements List<T>{
      * The iterator for SinglyLinkedList.
      */
     private class LinkedListIterator implements Iterator<T> {
-        private Node<T> curPointer = new Node<>(null, head);
-        private Node<T> deletePointer = new Node<>(null, head);
+        private Node<T> curPointer = head;
+        private Node<T> deletePointer = new Node<>(null, new Node<>(null, head));
         private int deleteIndex = -1;
         private boolean hasCalledNext = false;
+        private boolean justCalledRemove = false;
 
         @Override
         public boolean hasNext() {
-            return curPointer.next != null;
+            return curPointer != null && curPointer.data != null;
         }
 
         @Override
         public T next() {
             if (hasNext()) {
-                T temp = curPointer.next.data;
+                T temp = curPointer.data;
                 curPointer = curPointer.next;
-                if (size() > 3 && deletePointer.next.next.next.data == curPointer.data) {
+                if (!justCalledRemove) {
                     deletePointer = deletePointer.next;
+                    deleteIndex++;
                 }
+                justCalledRemove = false;
                 hasCalledNext = true;
-                deleteIndex++;
                 return temp;
             } else {
                 throw new NoSuchElementException();
@@ -197,11 +199,13 @@ public class SinglyLinkedList <T> implements List<T>{
             if (!hasCalledNext) throw new IllegalStateException();
             else if (deleteIndex == 0) {
                 head = head.next;
+                deletePointer.next = head;
             } else {
                 // deletePointer.next is point to the item before the item to be removed
-                deletePointer.next.next = deletePointer.next.next.next;
+                deletePointer.next = deletePointer.next.next;
             }
             hasCalledNext = false;
+            justCalledRemove = true;
             deleteIndex--;
             count--;
         }
