@@ -41,6 +41,7 @@ public class TextEditor {
 	 * This is done in the reverse of the order in which they were applied.
 	 */
 	public void undo() {
+		if (undoStack.isEmpty()) throw new UnsupportedOperationException();
 		Edit e = undoStack.pop();
 		e.revert(text);
 		redoStack.push(e);
@@ -51,6 +52,7 @@ public class TextEditor {
 	 * This is done in the reverse of the order in which they were undone.
 	 */
 	public void redo() {
+		if (redoStack.isEmpty()) throw new UnsupportedOperationException();
 		Edit e = redoStack.pop();
 		e.apply(text);
 		undoStack.push(e);

@@ -183,10 +183,10 @@ public class SinglyLinkedList <T> implements List<T>{
                 curPointer = curPointer.next;
                 if (!justCalledRemove) {
                     deletePointer = deletePointer.next;
-                    deleteIndex++;
                 }
                 justCalledRemove = false;
                 hasCalledNext = true;
+                deleteIndex++;
                 return temp;
             } else {
                 throw new NoSuchElementException();
