@@ -7,9 +7,9 @@ import java.util.Random;
 public class LinkedListStackPushTimingExperiment extends TimingExperiment {
     private static String problemSizeDescription = "List Size";  // TODO
     private static int problemSizeMin = 10000;  // TODO
-    private static int problemSizeCount = 100;  // TODO
+    private static int problemSizeCount = 50;  // TODO
     private static int problemSizeStep = 10000;  // TODO
-    private static int experimentIterationCount = 200;  // TODO
+    private static int experimentIterationCount = 500;  // TODO
 
     private final Random rng = new Random();
     protected Stack<Integer> stack;
