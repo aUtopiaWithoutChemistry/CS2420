@@ -581,4 +581,14 @@ class SinglyLinkedListTest {
                 iterator.remove();
         }
     }
+
+    @Test
+    void testIteratorRemoveEveryElementBesidesLast() {
+        Iterator<Integer> iterator = smallList.iterator();
+        for(int i = 0; i < 3; i++) {
+            iterator.next();
+            iterator.remove();
+        }
+        assertArrayEquals(new Integer[]{7}, smallList.toArray());
+    }
 }

@@ -61,6 +61,16 @@ class TextEditorTester {
 		empty.undo();
 		assertEquals("", empty.toString());
 	}
+
+	@Test
+	void testEmptyUndo() {
+		assertThrows(UnsupportedOperationException.class, () -> empty.undo());
+	}
+
+	@Test
+	void testSmallRedo() {
+		assertThrows(UnsupportedOperationException.class, () -> small.redo());
+	}
 	
 	@Test
 	void testEmptyInsertUndoRedo() {
