@@ -195,7 +195,7 @@ public class SinglyLinkedList <T> implements List<T>{
 
         @Override
         public void remove() {
-            if (count == 0) throw new UnsupportedOperationException("remove");
+            if (count == 0) throw new NoSuchElementException();
             if (!hasCalledNext) throw new IllegalStateException();
             else if (deleteIndex == 0) {
                 head = head.next;
