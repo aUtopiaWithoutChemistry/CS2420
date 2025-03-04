@@ -6,7 +6,7 @@ import java.util.Random;
 
 public class RandomGraphGenerator {
     public static void main(String[] args) {
-        generateRandomDotFile("RandomGraph.txt", 30);
+        generateRandomDotFile("src/assign07/TestGraph100.txt", 100);
     }
 
     public static void generateRandomDotFile(String filename, int vertexCount) {
@@ -32,18 +32,18 @@ public class RandomGraphGenerator {
             vertex[i] = "v" + i;
         }
 
-        // randomly connect the vertices using 2 * |V| edges
-        for (int i = 0; i < 2 * vertexCount; i++) {
-            out.println("\t" + vertex[rng.nextInt(vertexCount)] + edgeOp + vertex[rng.nextInt(vertexCount)]);
-        }
+//        // randomly connect the vertices using 2 * |V| edges
+//        for (int i = 0; i < 2 * vertexCount; i++) {
+//            out.println("\t" + vertex[rng.nextInt(vertexCount)] + edgeOp + vertex[rng.nextInt(vertexCount)]);
+//        }
 
 //        // NOTE: Repeat this loop as needed for denser graphs.
 //        for(int i = 0; i < vertexCount - 1; i++)
 //            out.println("\t" + vertex[i] + "->" + vertex[i + rng.nextInt(vertexCount - i)]);
 
-//        // NOTE: Repeat this loop as needed for denser graphs.
-//        for(int i = 0; i < vertexCount - 1; i++)
-//            out.println("\t" + vertex[i] + "->" + vertex[i + 1 + rng.nextInt(vertexCount - (i + 1))]);
+        // NOTE: Repeat this loop as needed for denser graphs.
+        for(int i = 0; i < vertexCount - 1; i++)
+            out.println("\t" + vertex[i] + "->" + vertex[i + 1 + rng.nextInt(vertexCount - (i + 1))]);
 
 
         out.println("}");
