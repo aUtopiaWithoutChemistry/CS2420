@@ -69,6 +69,14 @@ public class Graph<Type> {
         }
         cur.addNeighbor(neighborNode);
         neighborNode.addParent(cur);
+        neighborNode.inDegree++;
+    }
+
+    public boolean contains(Type target) {
+        for (Type data : allVerties.keySet()) {
+            if (target.equals(data)) return true;
+        }
+        return false;
     }
 
     public void readGraph(String filepath) {
@@ -130,8 +138,19 @@ public class Graph<Type> {
         return detectedCycle;
     }
 
+    private void reset() {
+        for (Type data : allVerties.keySet()) {
+            Vertex<Type> cur = allVerties.get(data);
+            cur.isVisited = false;
+            cur.from = null;
+            cur.inDegree = cur.parents.size();
+        }
+    }
+
     public boolean depthFirstSearch(Type source, Type destination) {
-        if (!allVerties.containsKey(destination)) return false;
+        if (!allVerties.containsKey(destination) || !allVerties.containsKey(source)) return false;
+        if (source.equals(destination)) return true;
+        reset();
         return dfsRecur(source, destination);
     }
 
@@ -155,8 +174,14 @@ public class Graph<Type> {
     public List<Type> breadthFirstSearch(Type source, Type destination) {
         List<Type> returnList = new ArrayList<>();
         Queue<Vertex<Type>> myQueue = new LinkedList<>();
+        if (source.equals(destination)) {
+            returnList.add(source);
+            return returnList;
+        }
+        reset();
         // add the source vertex into the queue
         Vertex<Type> root = allVerties.get(source);
+        root.isVisited = true;
         myQueue.offer(root);
         // while the queue is not empty
         while (!myQueue.isEmpty()) {
@@ -172,6 +197,8 @@ public class Graph<Type> {
                     // if found destination, then add that neighbor into the list
                     if (neighbor.data.equals(destination)) {
                         returnList.add(neighbor.data);
+                        myQueue.clear();
+                        break;
                     }
                 }
             }
@@ -190,7 +217,7 @@ public class Graph<Type> {
         if (isCyclic()) throw new IllegalArgumentException();
         List<Type> returnList = new ArrayList<>();
         Queue<Vertex<Type>> myQueue = new LinkedList<>();
-
+        reset();
         for (Type vertexName : allVerties.keySet()) {
             Vertex<Type> vertex = allVerties.get(vertexName);
             if (vertex.inDegree == 0) myQueue.add(vertex);
