@@ -6,16 +6,18 @@ import java.util.*;
 
 public class Graph<Type> {
     private HashMap<Type, Vertex<Type>> allVerties;
+    private HashMap<Type, Vertex<Type>> checkCyclic;
 
     private static class Vertex<Type> {
         public Type data;
-        public ArrayList<Vertex<Type>> neighbors;
+        public ArrayList<Vertex<Type>> neighbors, parents;
         public boolean isVisited;
         public Vertex<Type> from;
         public int inDegree;
         public Vertex(Type data) {
             this.data = data;
             neighbors = new ArrayList<>();
+            parents = new ArrayList<>();
             isVisited = false;
             inDegree = 0;
             from = null;
@@ -23,7 +25,10 @@ public class Graph<Type> {
 
         public void addNeighbor(Vertex<Type> newNeighbor) {
             neighbors.add(newNeighbor);
-            inDegree++;
+        }
+
+        public void addParent(Vertex<Type> newParent) {
+            parents.add(newParent);
         }
 
         public String toString() {
@@ -37,13 +42,20 @@ public class Graph<Type> {
 
     public Graph() {
         allVerties = new HashMap<>();
+        checkCyclic = new HashMap<>();
+    }
+
+    public Graph(String filepath) {
+        allVerties = new HashMap<>();
+        checkCyclic = new HashMap<>();
+        readGraph(filepath);
     }
 
     public void addVertex(Type data) {
         allVerties.put(data, new Vertex<>(data));
     }
 
-    public void addNeighbor(Type target, Type neighbor) {
+    public void addEdge(Type target, Type neighbor) {
         if (!allVerties.containsKey(target)) {
             addVertex(target);
         }
@@ -51,10 +63,12 @@ public class Graph<Type> {
         Vertex<Type> neighborNode;
         if (!allVerties.containsKey(neighbor)) {
             neighborNode = new Vertex<>(neighbor);
+            allVerties.put(neighbor, neighborNode);
         } else {
             neighborNode = allVerties.get(neighbor);
         }
         cur.addNeighbor(neighborNode);
+        neighborNode.addParent(cur);
     }
 
     public void readGraph(String filepath) {
@@ -71,7 +85,7 @@ public class Graph<Type> {
                 if (relationship[0].equals("}")) break;
                 Type target = (Type)relationship[0].replace("\t", "");
                 Type neighbor = (Type)relationship[1];
-                addNeighbor(target, neighbor);
+                addEdge(target, neighbor);
             }
         } catch (FileNotFoundException e) {
             System.out.println("file not found");
@@ -89,14 +103,36 @@ public class Graph<Type> {
         return graphInfo.toString();
     }
 
+    public boolean isCyclic() {
+        boolean isCyclic = false;
+        for (Type data : allVerties.keySet()) {
+            Vertex<Type> cur = allVerties.get(data);
+            checkCyclic = new HashMap<>();
+            isCyclic = (isCyclicRecur(cur));
+            if (isCyclic) break;
+        }
+        return isCyclic;
+    }
+
+    private boolean isCyclicRecur(Vertex<Type> cur) {
+        boolean detectedCycle = false;
+        // reach the end leaf
+        if (cur.neighbors.isEmpty()) {
+            checkCyclic.put(cur.data, cur);
+            return false;
+        }
+        for (Vertex<Type> neighbor : cur.neighbors) {
+            // if found neighbor in the hashmap
+            if (checkCyclic.containsKey(neighbor.data) && !neighbor.neighbors.isEmpty()) return true;
+            checkCyclic.put(neighbor.data, neighbor);
+            if (isCyclicRecur(neighbor)) return true;
+        }
+        return detectedCycle;
+    }
+
     public boolean depthFirstSearch(Type source, Type destination) {
         if (!allVerties.containsKey(destination)) return false;
-        boolean isFound = dfsRecur(source, destination);
-        // reset all the isVisited variables.
-        for (Type key : allVerties.keySet()) {
-            allVerties.get(key).isVisited = false;
-        }
-        return isFound;
+        return dfsRecur(source, destination);
     }
 
     private boolean dfsRecur(Type source, Type destination) {
@@ -119,28 +155,54 @@ public class Graph<Type> {
     public List<Type> breadthFirstSearch(Type source, Type destination) {
         List<Type> returnList = new ArrayList<>();
         Queue<Vertex<Type>> myQueue = new LinkedList<>();
+        // add the source vertex into the queue
         Vertex<Type> root = allVerties.get(source);
         myQueue.offer(root);
+        // while the queue is not empty
         while (!myQueue.isEmpty()) {
+            // poll a vertex
             Vertex<Type> cur = myQueue.poll();
+            // check each neighbor of that vertex
             for (Vertex<Type> neighbor : cur.neighbors) {
-                neighbor.from = cur;
-                myQueue.offer(neighbor);
-                if (neighbor.data.equals(destination)) {
-                    returnList.add(neighbor.data);
+                if (!neighbor.isVisited) {
+                    neighbor.isVisited = true;
+                    // set the "from" variable in neighbor to current vertex
+                    neighbor.from = cur;
+                    myQueue.offer(neighbor);
+                    // if found destination, then add that neighbor into the list
+                    if (neighbor.data.equals(destination)) {
+                        returnList.add(neighbor.data);
+                    }
                 }
             }
-            myQueue.poll();
         }
+        // if the list is not empty, means we found the destination
         if (!returnList.isEmpty()) {
-            while (allVerties.get(returnList.getLast()).from != null) {
-                returnList.add(allVerties.get(returnList.getLast()).from.data);
+            // get all the "from" information and find the "from" vertex insert it to the List
+            while (allVerties.get(returnList.get(0)).from != null) {
+                returnList.add(0, allVerties.get(returnList.get(0)).from.data);
             }
         }
         return returnList;
     }
 
     public List<Type> topoSort() {
-        return null;
+        if (isCyclic()) throw new IllegalArgumentException();
+        List<Type> returnList = new ArrayList<>();
+        Queue<Vertex<Type>> myQueue = new LinkedList<>();
+
+        for (Type vertexName : allVerties.keySet()) {
+            Vertex<Type> vertex = allVerties.get(vertexName);
+            if (vertex.inDegree == 0) myQueue.add(vertex);
+        }
+        while (!myQueue.isEmpty()) {
+            Vertex<Type> cur = myQueue.poll();
+            returnList.add(cur.data);
+            for (Vertex<Type> neighbor : cur.neighbors) {
+                neighbor.inDegree--;
+                if (neighbor.inDegree == 0) myQueue.add(neighbor);
+            }
+        }
+        return returnList;
     }
 }
