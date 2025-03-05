@@ -4,10 +4,23 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
 
+/**
+ * An implementation of Graph, contains a nested class Vertex, provided methods
+ * to create, add edge, read dot files, etc. Also implements DFS, BFS, and
+ * topological sort algorithms.
+ *
+ * @author Zifan Zuo and Xinrui Ou
+ * @version 2025-03-05
+ */
 public class Graph<Type> {
     private HashMap<Type, Vertex<Type>> allVerties;
     private HashMap<Type, Vertex<Type>> checkCyclic;
 
+    /**
+     * A nested vertex class, contains information of each vertex and the
+     * relationship between current vertex and other vertices. Provides
+     * addNeighbor, addParent methods.
+     */
     private static class Vertex<Type> {
         public Type data;
         public ArrayList<Vertex<Type>> neighbors, parents;
@@ -23,10 +36,20 @@ public class Graph<Type> {
             from = null;
         }
 
+        /**
+         * to add a newNeighbor to the neighbors list of current vertex
+         *
+         * @param newNeighbor the new neighbor's vertex
+         */
         public void addNeighbor(Vertex<Type> newNeighbor) {
             neighbors.add(newNeighbor);
         }
 
+        /**
+         * to add a newParent to the parents list of current vertex
+         *
+         * @param newParent the new parent's vertex
+         */
         public void addParent(Vertex<Type> newParent) {
             parents.add(newParent);
         }
@@ -40,21 +63,42 @@ public class Graph<Type> {
         }
     }
 
+    /**
+     * Default constructor of Graph class.
+     */
     public Graph() {
         allVerties = new HashMap<>();
         checkCyclic = new HashMap<>();
     }
 
+    /**
+     * Constructor that can read a dot file and turn to graph.
+     *
+     * @param filepath the file path in the computer
+     */
     public Graph(String filepath) {
         allVerties = new HashMap<>();
         checkCyclic = new HashMap<>();
         readGraph(filepath);
     }
 
+    /**
+     * to add a new vertex into the graph.
+     *
+     * @param data the data that to be stored in the new vertex
+     */
     public void addVertex(Type data) {
         allVerties.put(data, new Vertex<>(data));
     }
 
+    /**
+     * to add a relationship between target and neighbor vertices.
+     * if target or neighbor vertex wasn't exist in the graph, then
+     * create them first.
+     *
+     * @param target the data that store in the target vertex
+     * @param neighbor the data that store in the neighbor vertex
+     */
     public void addEdge(Type target, Type neighbor) {
         if (!allVerties.containsKey(target)) {
             addVertex(target);
@@ -72,6 +116,12 @@ public class Graph<Type> {
         neighborNode.inDegree++;
     }
 
+    /**
+     * to detect weather this graph contains target vertex.
+     *
+     * @param target the data store in the target vertex
+     * @return true if found, false if it doesn't
+     */
     public boolean contains(Type target) {
         for (Type data : allVerties.keySet()) {
             if (target.equals(data)) return true;
@@ -79,6 +129,11 @@ public class Graph<Type> {
         return false;
     }
 
+    /**
+     * read a dot file and extract the information in that, turn it into a graph.
+     *
+     * @param filepath the file path on this computer
+     */
     public void readGraph(String filepath) {
         Scanner sc;
         try {
@@ -111,6 +166,11 @@ public class Graph<Type> {
         return graphInfo.toString();
     }
 
+    /**
+     * the driver method to detect if there are cyclic structure in this graph.
+     *
+     * @return true if found a circle, false if it not found
+     */
     public boolean isCyclic() {
         boolean isCyclic = false;
         for (Type data : allVerties.keySet()) {
@@ -122,6 +182,12 @@ public class Graph<Type> {
         return isCyclic;
     }
 
+    /**
+     * the recursive part of checking cyclic method.
+     *
+     * @param cur the current Vertex
+     * @return true if found a circle, false if it not found
+     */
     private boolean isCyclicRecur(Vertex<Type> cur) {
         boolean detectedCycle = false;
         // reach the end leaf
@@ -138,6 +204,10 @@ public class Graph<Type> {
         return detectedCycle;
     }
 
+    /**
+     * a private helper method to reset all the vertices to its original situation,
+     * so that we can conduce all the algorithm below again successfully.
+     */
     private void reset() {
         for (Type data : allVerties.keySet()) {
             Vertex<Type> cur = allVerties.get(data);
@@ -147,6 +217,14 @@ public class Graph<Type> {
         }
     }
 
+    /**
+     * A recursive DepthFirstSearch algorithm, trying to find a path from the source
+     * to the destination.
+     *
+     * @param source the data that store in the source vertex
+     * @param destination the data that store in the destination vertex
+     * @return true if found a path, false if it doesn't.
+     */
     public boolean depthFirstSearch(Type source, Type destination) {
         if (!allVerties.containsKey(destination) || !allVerties.containsKey(source)) return false;
         if (source.equals(destination)) return true;
@@ -154,6 +232,13 @@ public class Graph<Type> {
         return dfsRecur(source, destination);
     }
 
+    /**
+     * The recursive part of dfs algorithm.
+     *
+     * @param source the data that store in the source vertex
+     * @param destination the data that store in the destination vertex
+     * @return true if found a path, false if it doesn't
+     */
     private boolean dfsRecur(Type source, Type destination) {
         Vertex<Type> cur = allVerties.get(source);
         // base case1: already visited
@@ -171,6 +256,14 @@ public class Graph<Type> {
         return false;
     }
 
+    /**
+     * A BreathFirstSearch method, to find the shortest path from source vertex to
+     * destination vertex.
+     *
+     * @param source the data that store in the source vertex
+     * @param destination the data that store in the destination vertex
+     * @return a List of data, shows the shortest path from source to destination
+     */
     public List<Type> breadthFirstSearch(Type source, Type destination) {
         List<Type> returnList = new ArrayList<>();
         Queue<Vertex<Type>> myQueue = new LinkedList<>();
@@ -213,6 +306,12 @@ public class Graph<Type> {
         return returnList;
     }
 
+    /**
+     * A topological sort algorithm, gives a list of data that sorted according to
+     * topological idea from a graph.
+     *
+     * @return a list of sorted data.
+     */
     public List<Type> topoSort() {
         if (isCyclic()) throw new IllegalArgumentException();
         List<Type> returnList = new ArrayList<>();
