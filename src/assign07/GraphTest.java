@@ -9,7 +9,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class EnhancedGraphTest {
+class GraphTest {
     public Graph<Integer> emptyGraph, smallGraph, cyclicGraph, singleVertexGraph, disconnectedGraph;
     public Graph<String> largeGraph, graph10, graph20, graph30, graph50, graph100;
 
@@ -301,5 +301,76 @@ class EnhancedGraphTest {
         assertTrue(cIndex < eIndex);
         assertTrue(dIndex < fIndex);
         assertTrue(eIndex < fIndex);
+    }
+
+    @Test
+    void testDFSAndBFSNoPathBetweenNodes() {
+        Graph<Integer> g = new Graph<>();
+        g.addEdge(1, 2);
+        g.addEdge(3, 4);
+
+        assertFalse(g.depthFirstSearch(1, 4));
+        assertFalse(g.depthFirstSearch(3, 1));
+
+        assertTrue(g.breadthFirstSearch(1, 4).isEmpty()); }
+
+    @Test
+    void testDFSAndBFSSelfLoop() {
+        Graph<Integer> g = new Graph<>();
+        g.addEdge(1, 1);
+
+        assertTrue(g.depthFirstSearch(1, 1));
+        assertEquals(Arrays.asList(1), g.breadthFirstSearch(1, 1));
+    }
+    @Test
+    void testTopoSortMultipleValidOrders() {
+        Graph<String> g = new Graph<>();
+        g.addEdge("A", "B");
+        g.addEdge("A", "C");
+        g.addEdge("B", "D");
+        g.addEdge("C", "D");
+
+        List<String> sortedOrder = g.topoSort();
+
+        assertTrue(sortedOrder.indexOf("A") < sortedOrder.indexOf("B"));
+        assertTrue(sortedOrder.indexOf("A") < sortedOrder.indexOf("C"));
+        assertTrue(sortedOrder.indexOf("B") < sortedOrder.indexOf("D"));
+        assertTrue(sortedOrder.indexOf("C") < sortedOrder.indexOf("D"));
+    }
+    @Test
+    void testTopoSortWithDisconnectedGraph() {
+        Graph<Integer> g = new Graph<>();
+        g.addEdge(1, 2);
+        g.addEdge(2, 3);
+        g.addVertex(4);
+        g.addVertex(5);
+
+        List<Integer> sortedOrder = g.topoSort();
+
+        assertTrue(sortedOrder.indexOf(1) < sortedOrder.indexOf(2));
+        assertTrue(sortedOrder.indexOf(2) < sortedOrder.indexOf(3));
+        assertTrue(sortedOrder.contains(4));
+        assertTrue(sortedOrder.contains(5));
+    }
+    @Test
+    void testTopoSortWithCycle() {
+        Graph<Integer> g = new Graph<>();
+        g.addEdge(1, 2);
+        g.addEdge(2, 3);
+        g.addEdge(3, 1);
+
+        assertThrows(IllegalArgumentException.class, () -> g.topoSort());
+    }
+    @Test
+    void testBFSVertexWithNoIncomingEdges() {
+        Graph<Integer> g = new Graph<>();
+        g.addEdge(1, 2);
+        g.addVertex(3);
+
+        List<Integer> path = g.breadthFirstSearch(1, 3);
+        assertTrue(path.isEmpty());
+
+        List<Integer> selfPath = g.breadthFirstSearch(3, 3);
+        assertEquals(Arrays.asList(3), selfPath);
     }
 }

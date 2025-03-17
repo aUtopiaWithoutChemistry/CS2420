@@ -228,7 +228,7 @@ public class Graph<Type> {
     public boolean depthFirstSearch(Type source, Type destination) {
         if (!allVerties.containsKey(destination) || !allVerties.containsKey(source)) return false;
         if (source.equals(destination)) return true;
-        reset();
+//        reset();
         return dfsRecur(source, destination);
     }
 
@@ -313,12 +313,11 @@ public class Graph<Type> {
      * @return a list of sorted data.
      */
     public List<Type> topoSort() {
-        if (isCyclic()) throw new IllegalArgumentException();
+//        if (isCyclic()) throw new IllegalArgumentException();
         List<Type> returnList = new ArrayList<>();
         Queue<Vertex<Type>> myQueue = new LinkedList<>();
-        reset();
-        for (Type vertexName : allVerties.keySet()) {
-            Vertex<Type> vertex = allVerties.get(vertexName);
+//        reset();
+        for (Vertex<Type> vertex : allVerties.values()) {
             if (vertex.inDegree == 0) myQueue.add(vertex);
         }
         while (!myQueue.isEmpty()) {
