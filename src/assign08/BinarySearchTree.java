@@ -9,11 +9,13 @@ public class BinarySearchTree<Type extends Comparable<? super Type>> implements 
     private static class Node<Type> {
         public Type data;
         public Node<Type> leftChild, rightChild, parent;
+        public boolean visited;
 
         public Node(Type data) {
             this.data = data;
             this.leftChild = null;
             this.rightChild = null;
+            this.visited = false;
         }
 
         public Node(Type data, Node<Type> parent) {
@@ -21,6 +23,7 @@ public class BinarySearchTree<Type extends Comparable<? super Type>> implements 
             this.parent = parent;
             this.leftChild = null;
             this.rightChild = null;
+            this.visited = false;
         }
 
         public Node(Type data, Node<Type> leftChild, Node<Type> rightChild, Node<Type> parent) {
@@ -28,6 +31,7 @@ public class BinarySearchTree<Type extends Comparable<? super Type>> implements 
             this.leftChild = leftChild;
             this.rightChild = rightChild;
             this.parent = parent;
+            this.visited = false;
         }
 
         public String toString() {
@@ -184,13 +188,21 @@ public class BinarySearchTree<Type extends Comparable<? super Type>> implements 
     private void delete(Node<Type> cur) {
         // case 1: remove leaf node
         if (cur.leftChild == null && cur.rightChild == null) {
-            if (cur.parent.leftChild.equals(cur)) cur.parent.leftChild = null;
+            // if cur is root
+            if (cur.parent == null) root = null;
+            else if (cur.parent.leftChild != null && cur.parent.leftChild.equals(cur)) cur.parent.leftChild = null;
             else cur.parent.rightChild = null;
         }
         // case 2: remove node that only have one child
         if (cur.leftChild != null ^ cur.rightChild != null) {
             Node<Type> curChild = cur.leftChild != null ? cur.leftChild : cur.rightChild;
-            if (cur.parent.leftChild.equals(cur)) cur.parent.leftChild = curChild;
+            // if cur is root
+            if (cur.parent == null) {
+                root.data = curChild.data;
+                if (root.rightChild == null) root.leftChild = root.leftChild.leftChild;
+                else root.rightChild = root.rightChild.rightChild;
+            }
+            else if (cur.parent.leftChild != null && cur.parent.leftChild.equals(cur)) cur.parent.leftChild = curChild;
             else cur.parent.rightChild = curChild;
         }
         // case 3: remove node that have both child
@@ -203,6 +215,7 @@ public class BinarySearchTree<Type extends Comparable<? super Type>> implements 
             if (successor.parent.leftChild.equals(successor)) successor.parent.leftChild = null;
             else successor.parent.rightChild = null;
         }
+        size--;
     }
 
     @Override
@@ -219,7 +232,7 @@ public class BinarySearchTree<Type extends Comparable<? super Type>> implements 
             count = 0;
             hasCalledNext = false;
             cur = root;
-            while (cur.leftChild != null) {
+            while (cur != null && cur.leftChild != null) {
                 cur = cur.leftChild;
             }
         }
@@ -231,28 +244,41 @@ public class BinarySearchTree<Type extends Comparable<? super Type>> implements 
 
         @Override
         public Type next() {
-            Type data = null;
-            if (hasNext()) {
-                deletePt = cur;
-                // if current node don't have right child, then go to its parent
-                if (cur.rightChild == null) {
-                    data = cur.data;
-                    cur = cur.parent;
-                }
-                // if current node have right child, then go to its successor
-                else {
-                    data = cur.data;
-                    cur = findSuccessor(cur);
-                }
-                count++;
-                hasCalledNext = true;
+            if (!hasNext()) {
+                throw new NoSuchElementException("No more elements in the iterator");
+            }
+            Type data;
+            deletePt = cur;
+            deletePt.visited = true;
+            count++;
+            hasCalledNext = true;
+            // if current node don't have right child, then go to its parent
+            if (cur.rightChild == null) {
+                data = cur.data;
+                if (count == size) return data;
+                cur = cur.parent;
+                while (cur.visited) cur = cur.parent;
+            }
+            // if current node have right child, then go to its successor
+            else {
+                data = cur.data;
+                if (count == size) return data;
+                cur = findSuccessor(cur);
             }
             return data;
         }
 
         @Override
         public void remove() {
+            if (!hasCalledNext) {
+                throw new IllegalStateException("next() has not been called");
+            }
+            // Call the BST's delete method
             delete(deletePt);
+            // Reset the flag
+            hasCalledNext = false;
+            // Decrement the counter since we removed an element
+            count--;
         }
     }
 }
