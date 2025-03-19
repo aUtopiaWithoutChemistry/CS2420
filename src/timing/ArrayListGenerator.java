@@ -115,4 +115,43 @@ public class ArrayListGenerator {
         array.set(firstIndex, array.get(secondIndex));
         array.set(secondIndex, temp);
     }
+
+    /**
+     * Generates an ArrayList of problemSize random integers in nearly ascending order, with each element unique.
+     *
+     * @implNote calls generateAscendingArrayListWithoutDuplicates and then swaps a small number of random pairs of nearby elements
+     * @param problemSize - size of the list
+     */
+    public static ArrayList<Integer> generateNearlyAscendingArrayListWithoutDuplicates(int problemSize) {
+        ArrayList<Integer> array = generateAscendingArrayListWithoutDuplicates(problemSize);
+        slightlyShuffleArray(array);
+        return array;
+    }
+
+    /**
+     * Generates an ArrayList of problemSize random integers in a permuted order, with each element unique.
+     *
+     * @implNote calls generateAscendingArrayListWithoutDuplicates and then shuffles the contents of the list
+     * @param problemSize - size of the list
+     */
+    public static ArrayList<Integer> generatePermutedArrayListWithoutDuplicates(int problemSize) {
+        ArrayList<Integer> array = generateAscendingArrayListWithoutDuplicates(problemSize);
+        shuffleArray(array);
+        return array;
+    }
+
+    /**
+     * Generates an ArrayList of problemSize random integers in ascending order, with each element unique.
+     *
+     * @param problemSize - size of the list
+     */
+    private static ArrayList<Integer> generateAscendingArrayListWithoutDuplicates(int problemSize) {
+        ArrayList<Integer> list = new ArrayList<>();
+        int currentElement = rng.nextInt(20);
+        for(int i = 0; i < problemSize; i++) {
+            list.add(currentElement);
+            currentElement += rng.nextInt(1, 10);
+        }
+        return list;
+    }
 }
