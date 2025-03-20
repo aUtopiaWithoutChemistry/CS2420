@@ -51,7 +51,9 @@ public class SpellChecker {
 	 * @param word - the String to be added to the dictionary
 	 */
 	public void addToDictionary(String word) {
-		// TODO: FILL IN
+		if (word == null) {
+			throw new IllegalArgumentException();
+		}
 		dictionary.add(word);
 	}
 
@@ -67,7 +69,6 @@ public class SpellChecker {
 
 		List<String> wordsToCheck = readFromFile(documentFile);
 
-		// TODO: FILL IN -- do not return null
         wordsToCheck.removeIf(dictionary::contains);
 		return wordsToCheck;
 	}
@@ -78,7 +79,6 @@ public class SpellChecker {
 	 * @param words - the List of Strings to be added to the dictionary
 	 */
 	private void buildDictionary(List<String> words) {
-		// TODO: FILL IN
 		dictionary.addAll(words);
 	}
 
