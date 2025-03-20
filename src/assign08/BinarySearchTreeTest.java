@@ -403,6 +403,7 @@ class BinarySearchTreeTest {
         // Remove all elements using iterator
         Iterator<Integer> iterator = tree.iterator();
         while (iterator.hasNext()) {
+//            System.out.println(tree);
             iterator.next();
             iterator.remove();
         }

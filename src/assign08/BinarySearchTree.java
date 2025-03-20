@@ -2,6 +2,14 @@ package assign08;
 
 import java.util.*;
 
+/**
+ * An implementation of Binary Search Tree which implements SortedSet,
+ * maintains a set of non-duplicate data and provides methods like add, addAll,
+ * contains, remove, first, last, size, isEmpty, clear, and an iterator.
+ *
+ * @author Zifan Zuo and Xinrui Ou
+ * @version 2025-03-18
+ */
 public class BinarySearchTree<Type extends Comparable<? super Type>> implements SortedSet<Type> {
     private Node<Type> root;
     private int size;
@@ -170,7 +178,7 @@ public class BinarySearchTree<Type extends Comparable<? super Type>> implements 
 
     @Override
     public boolean isEmpty() {
-        return size == 0;
+        return root == null;
     }
 
     @Override
@@ -194,26 +202,42 @@ public class BinarySearchTree<Type extends Comparable<? super Type>> implements 
             else cur.parent.rightChild = null;
         }
         // case 2: remove node that only have one child
-        if (cur.leftChild != null ^ cur.rightChild != null) {
+        else if (cur.leftChild != null ^ cur.rightChild != null) {
             Node<Type> curChild = cur.leftChild != null ? cur.leftChild : cur.rightChild;
             // if cur is root
             if (cur.parent == null) {
                 root.data = curChild.data;
-                if (root.rightChild == null) root.leftChild = root.leftChild.leftChild;
-                else root.rightChild = root.rightChild.rightChild;
+                if (root.rightChild == null) root = root.leftChild;
+                else root = root.rightChild;
+                root.parent = null;
             }
             else if (cur.parent.leftChild != null && cur.parent.leftChild.equals(cur)) cur.parent.leftChild = curChild;
             else cur.parent.rightChild = curChild;
         }
         // case 3: remove node that have both child
-        if (cur.leftChild != null && cur.rightChild != null) {
+        else {
             // find successor
             Node<Type> successor = findSuccessor(cur);
             // replace cur node with successor
             cur.data = successor.data;
-            // remove successor
-            if (successor.parent.leftChild.equals(successor)) successor.parent.leftChild = null;
-            else successor.parent.rightChild = null;
+            // Delete the successor
+            // Successor has no left child by definition, so it falls into case 1 or 2
+            if (successor.rightChild == null) {
+                // Case 1: Successor is a leaf
+                if (successor == successor.parent.leftChild) {
+                    successor.parent.leftChild = null;
+                } else {
+                    successor.parent.rightChild = null;
+                }
+            } else {
+                // Case 2: Successor has a right child
+                if (successor == successor.parent.leftChild) {
+                    successor.parent.leftChild = successor.rightChild;
+                } else {
+                    successor.parent.rightChild = successor.rightChild;
+                }
+                successor.rightChild.parent = successor.parent;
+            }
         }
         size--;
     }
