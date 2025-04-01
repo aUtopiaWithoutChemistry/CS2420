@@ -14,11 +14,21 @@ public class BinarySearchTree<Type extends Comparable<? super Type>> implements 
     private Node<Type> root;
     private int size;
 
+    /**
+     * Node class, represent each Node on the BST.
+     * Contains data of current node, leftChild, rightChild, and its parent Node.
+     * Also, a visited value for some methods.
+     */
     private static class Node<Type> {
         public Type data;
         public Node<Type> leftChild, rightChild, parent;
         public boolean visited;
 
+        /**
+         * Constructor for Node. Provides data
+         *
+         * @param data data to store in the node
+         */
         public Node(Type data) {
             this.data = data;
             this.leftChild = null;
@@ -26,6 +36,12 @@ public class BinarySearchTree<Type extends Comparable<? super Type>> implements 
             this.visited = false;
         }
 
+        /**
+         * Constructor for Node. Provides data and parent Node
+         *
+         * @param data data to store in the node
+         * @param parent the parent of current node
+         */
         public Node(Type data, Node<Type> parent) {
             this.data = data;
             this.parent = parent;
@@ -34,6 +50,14 @@ public class BinarySearchTree<Type extends Comparable<? super Type>> implements 
             this.visited = false;
         }
 
+        /**
+         * Constructor for Node. Provides data and parent Node
+         *
+         * @param data data to store in the node
+         * @param parent the parent of current node
+         * @param leftChild leftChild of current node
+         * @param rightChild rightChild of current node
+         */
         public Node(Type data, Node<Type> leftChild, Node<Type> rightChild, Node<Type> parent) {
             this.data = data;
             this.leftChild = leftChild;
@@ -50,6 +74,9 @@ public class BinarySearchTree<Type extends Comparable<? super Type>> implements 
         }
     }
 
+    /**
+     * Constructor for BST, set root to null, and size to 0
+     */
     public BinarySearchTree() {
         this.root = null;
         this.size = 0;
@@ -187,12 +214,23 @@ public class BinarySearchTree<Type extends Comparable<? super Type>> implements 
         root = null;
     }
 
+    /**
+     * a helper method to find the successor.
+     *
+     * @param cur current node
+     * @return the successor node
+     */
     private Node<Type> findSuccessor(Node<Type> cur) {
         Node<Type> successor = cur.rightChild;
         while (successor.leftChild != null) successor = successor.leftChild;
         return successor;
     }
 
+    /**
+     * a helper method to delete a node.
+     *
+     * @param cur the node to be deleted
+     */
     private void delete(Node<Type> cur) {
         // case 1: remove leaf node
         if (cur.leftChild == null && cur.rightChild == null) {
@@ -247,11 +285,17 @@ public class BinarySearchTree<Type extends Comparable<? super Type>> implements 
         return new BSTIterator();
     }
 
+    /**
+     * A customized iterator for BST
+     */
     private class BSTIterator implements Iterator<Type> {
         private int count;
         private boolean hasCalledNext;
         private Node<Type> cur, deletePt;
 
+        /**
+         * The constructor for BST iterator.
+         */
         public BSTIterator() {
             count = 0;
             hasCalledNext = false;
