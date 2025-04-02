@@ -76,6 +76,9 @@ public class StudentGoodHash {
 
     public int hashCode() {
         // TODO: Fill in and add method comment.
-        return uid;
+        int result = Integer.hashCode(uid);
+        result = 31 * result + firstName.hashCode();
+        result = 31 * result + lastName.hashCode();
+        return result;
     }
 }

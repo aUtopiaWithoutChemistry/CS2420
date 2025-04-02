@@ -14,7 +14,7 @@ public class StudentMediumHashCollisionExperiment extends CollisionExperiment<St
 
     private static String problemSizeDescription = "element count";
     private static int problemSizeMin = 1000;
-    private static int problemSizeCount = 10;
+    private static int problemSizeCount = 30;
     private static int problemSizeStep = 1000;
 
     // Counting collisions is more precise than collecting running times; therefore,

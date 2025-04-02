@@ -2,14 +2,21 @@ package assign09;
 
 import java.util.*;
 
+/**
+ *
+ * @author Zifan Zuo and Xinrui Ou
+ * @version 2025-04-01
+ *
+ * @param <K> type of keys in this hash table
+ * @param <V> type of values in this hash table
+ */
 public class HashTable<K, V> implements Map<K, V> {
     // The chains must be stored in a basic array. Do not store them in an ArrayList or any other data structure.
     // Since each chain is a small collection of unpredictable size, Java's LinkedList should be used for each chain.
     private Object[] keyValuePairs;
-    private double loadFactor;
+    private final double loadFactor;
     private int cellNumber, count;
     private int numberOfCollisions;
-
 
     // The default (zero parameter) constructor creates a hash table with a maximum load factor of 10.0.
     public HashTable() {
@@ -50,17 +57,20 @@ public class HashTable<K, V> implements Map<K, V> {
     public boolean containsKey(K key) {
         int index = getIndex(key);
         for (MapEntry<K, V> entry : (LinkedList<MapEntry<K, V>>)keyValuePairs[index]) {
-            if (entry.getKey().equals(key)) return true;
+            if (entry.getKey().equals(key)) {
+                return true;
+            }
         }
         return false;
     }
 
     @Override
     public boolean containsValue(V value) {
-        if (value == null) throw new IllegalArgumentException();
         for (Object pairs : keyValuePairs) {
             for (MapEntry<K, V> pair : (LinkedList<MapEntry<K, V>>)pairs) {
-                if (value.equals(pair.getValue())) return true;
+                if (value.equals(pair.getValue())) {
+                    return true;
+                }
             }
         }
         return false;
@@ -82,7 +92,9 @@ public class HashTable<K, V> implements Map<K, V> {
         if (containsKey(key)) {
             int index = getIndex(key);
             for (MapEntry<K, V> pair : (LinkedList<MapEntry<K, V>>)keyValuePairs[index]) {
-                if (key.equals(pair.getKey())) return pair.getValue();
+                if (key.equals(pair.getKey())) {
+                    return pair.getValue();
+                }
             }
         }
         return null;
@@ -105,6 +117,7 @@ public class HashTable<K, V> implements Map<K, V> {
 
         int index = getIndex(key);
         LinkedList<MapEntry<K, V>> chain = getChain(index);
+        resetNumberOfCollisions();
         // when there is no entry in the chain
         if (chain.isEmpty()) {
             chain.add(new MapEntry<>(key, value));
@@ -112,11 +125,13 @@ public class HashTable<K, V> implements Map<K, V> {
         // when there is entry in the chain
         else {
             for (MapEntry<K, V> pair : chain) {
+                // if this key exist
                 if (pair.getKey().equals(key)) {
                     V returnValue = pair.getValue();
                     pair.setValue(value);
                     return returnValue;
                 }
+                // if the key does not exist, add one to collision
                 numberOfCollisions++;
             }
             chain.add(new MapEntry<>(key, value));
@@ -127,11 +142,13 @@ public class HashTable<K, V> implements Map<K, V> {
     @Override
     public V remove(K key) {
         int index = getIndex(key);
+        if (containsKey(key)) {
+            count--;
+        }
         // remove the MapEntry in keyValuePairs
         V value = get(key);
         LinkedList<MapEntry<K, V>> chain = (LinkedList<MapEntry<K, V>>)keyValuePairs[index];
         chain.remove(new MapEntry<>(key, get(key)));
-        if (value != null) count--;
         return value;
     }
 
@@ -183,6 +200,7 @@ public class HashTable<K, V> implements Map<K, V> {
             keyValuePairs[i] = new LinkedList<MapEntry<K, V>>();
         }
         count = 0;
+        numberOfCollisions = 0;
         return entries;
     }
 

@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class HashTableTest {
     private HashTable<Integer, Integer> emptyTable, smallTable, largeTable, customizeTable;
+    private HashTable<String, String> genericTable;
     private final int largeSize = 1000;
 
     @BeforeEach
@@ -15,10 +16,15 @@ class HashTableTest {
         smallTable = new HashTable<>();
         largeTable = new HashTable<>();
         customizeTable = new HashTable<>(1.0);
+        genericTable = new HashTable<>();
 
         smallTable.put(1, 4);
         smallTable.put(2, 5);
         smallTable.put(3, 6);
+
+        genericTable.put("one", null);
+        genericTable.put("two", "x");
+        genericTable.put("three", ".com");
 
         for (int i = 0; i < largeSize; i++) {
             largeTable.put(i, i + largeSize);
@@ -26,7 +32,6 @@ class HashTableTest {
         }
     }
 
-    // --- Basic functionality ---
     @Test
     void testClearBySize() {
         smallTable.clear();
@@ -56,6 +61,12 @@ class HashTableTest {
     }
 
     @Test
+    void testClearOnGenericTable() {
+        genericTable.clear();
+        assertTrue(genericTable.isEmpty());
+    }
+
+    @Test
     void testContainsKeyEmpty() {
         assertFalse(emptyTable.containsKey(1));
     }
@@ -80,6 +91,14 @@ class HashTableTest {
             assertTrue(customizeTable.containsKey(i));
         }
         assertFalse(customizeTable.containsKey(114514));
+    }
+
+    @Test
+    void testContainsKeyGeneric() {
+        assertTrue(genericTable.containsKey("one"));
+        assertTrue(genericTable.containsKey("two"));
+        assertTrue(genericTable.containsKey("three"));
+        assertFalse(genericTable.containsKey("x"));
     }
 
     @Test
@@ -112,6 +131,13 @@ class HashTableTest {
     }
 
     @Test
+    void testContainsValueGeneric() {
+        assertTrue(genericTable.containsValue("x"));
+        assertTrue(genericTable.containsValue(".com"));
+        assertFalse(genericTable.containsValue("one"));
+    }
+
+    @Test
     void testEntriesEmpty() {
         assertEquals(0, emptyTable.entries().size());
     }
@@ -134,6 +160,13 @@ class HashTableTest {
         for (int i = 0; i < largeSize; i++){
             assertTrue(customizeTable.entries().contains(new MapEntry<>(i, i + largeSize)));
         }
+    }
+
+    @Test
+    void testEntriesGeneric() {
+        assertTrue(genericTable.entries().contains(new MapEntry<String, String>("one", null)));
+        assertTrue(genericTable.entries().contains(new MapEntry<>("two", "x")));
+        assertTrue(genericTable.entries().contains(new MapEntry<>("three", ".com")));
     }
 
     @Test
@@ -164,6 +197,13 @@ class HashTableTest {
         assertEquals(1566, customizeTable.get(566));
         assertNull(customizeTable.get(1002));
         assertNull(customizeTable.get(8848));
+    }
+
+    @Test
+    void testGetGeneric() {
+        assertNull(genericTable.get("one"));
+        assertEquals("x", genericTable.get("two"));
+        assertEquals(".com", genericTable.get("three"));
     }
 
     @Test
@@ -210,6 +250,13 @@ class HashTableTest {
     }
 
     @Test
+    void testPutGeneric() {
+        assertNull(genericTable.put("four", "wow"));
+        assertNull(genericTable.put("one", "wow"));
+        assertEquals("wow", genericTable.put("one", "lol"));
+    }
+
+    @Test
     void testRemoveEmpty() {
         assertNull(emptyTable.remove(1));
     }
@@ -244,10 +291,62 @@ class HashTableTest {
     }
 
     @Test
+    void testRemoveGeneric() {
+        assertEquals("x", genericTable.remove("two"));
+        assertNull(genericTable.remove("one"));
+        assertNull(genericTable.remove("one"));
+    }
+
+    @Test
     void testSize() {
         assertEquals(0, emptyTable.size());
         assertEquals(3, smallTable.size());
         assertEquals(largeSize, largeTable.size());
         assertEquals(largeSize, customizeTable.size());
+        assertEquals(3, genericTable.size());
+    }
+
+    @Test
+    void testCollisionEmpty() {
+        emptyTable.put(1, 1);
+        emptyTable.put(11, 1);
+        assertEquals(1, emptyTable.getNumberOfCollisions());
+        emptyTable.put(21, 1);
+        emptyTable.put(31, 1);
+        emptyTable.put(41, 1);
+        emptyTable.put(51, 1);
+        emptyTable.put(61, 1);
+        emptyTable.put(71, 1);
+        emptyTable.put(81, 1);
+        emptyTable.put(91, 1);
+        assertEquals(9, emptyTable.getNumberOfCollisions());
+        emptyTable.put(101, 1);
+        assertEquals(10, emptyTable.getNumberOfCollisions());
+    }
+
+    @Test
+    void testCollisionLarge() {
+        // 160 cell, 1000 items, 6 items are already in the cell that we put last item
+        assertEquals(6, largeTable.getNumberOfCollisions());
+        largeTable.put(1120, 19999);
+        assertEquals(7, largeTable.getNumberOfCollisions());
+        largeTable.put(1280, 1);
+        assertEquals(8, largeTable.getNumberOfCollisions());
+        largeTable.put(1440, 1);
+        largeTable.put(1600, 1);
+        largeTable.put(1760, 2);
+        assertEquals(11, largeTable.getNumberOfCollisions());
+    }
+
+    @Test
+    void testCollisionCustomized() {
+        assertEquals(0, customizeTable.getNumberOfCollisions());
+    }
+
+    @Test
+    void testPutWithNullValue() {
+        HashTable<Object, Object> table = new HashTable<>();
+        table.put(1, null);
+        assertEquals(1, table.size());
     }
 }
