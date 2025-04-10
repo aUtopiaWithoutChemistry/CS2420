@@ -8,11 +8,10 @@ import java.text.DecimalFormat;
  * object, but one that does a poor job of distributing students in a hash
  * table.
  * 
- * @author CS 2420 course staff and ?
- * @version ?
+ * @author CS 2420 course staff and Zifan Zuo and Xinrui Ou
+ * @version 2025-04-01
  */
 public class StudentBadHash {
-
 	private int uid;
 	private String firstName;
 	private String lastName;
@@ -83,8 +82,13 @@ public class StudentBadHash {
 		return firstName + " " + lastName + " (u" + formatter.format(uid) + ")";
 	}
 
+	/**
+	 * the hashCode method for StudentBadHash class, returns the same number for
+	 * every object.
+	 *
+	 * @return zero
+	 */
 	public int hashCode() {
-		// TODO: Fill in and add method comment.
 		return 0;
 	}
 }

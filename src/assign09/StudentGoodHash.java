@@ -2,8 +2,16 @@ package assign09;
 
 import java.text.DecimalFormat;
 
+/**
+ * This class provides a simple representation for a University of Utah student.
+ * Object's hashCode method is overridden with a correct hash function for this
+ * object, but one that does a good job of distributing students in a hash
+ * table.
+ *
+ * @author Zifan Zuo and Xinrui Ou
+ * @version 2025-04-01
+ */
 public class StudentGoodHash {
-
     private int uid;
     private String firstName;
     private String lastName;
@@ -74,8 +82,16 @@ public class StudentGoodHash {
         return firstName + " " + lastName + " (u" + formatter.format(uid) + ")";
     }
 
+    /**
+     * The hashCode method for StudentGoodHash class, this will return a combination
+     * of this student's uid, the hashCode of this student's first name, and the
+     * hashCode of this student's last name. Although we should believe the student's
+     * uid is unique, but this combination can tell us some wrong within the system, like
+     * two different student accidentally get the same uid.
+     *
+     * @return a good quality of hashCode
+     */
     public int hashCode() {
-        // TODO: Fill in and add method comment.
         int result = Integer.hashCode(uid);
         result = 31 * result + firstName.hashCode();
         result = 31 * result + lastName.hashCode();

@@ -15,9 +15,9 @@ import timing.TimingExperiment;
 public class HashTableContainsValueTimingExperiment extends TimingExperiment {
 
     private static String problemSizeDescription = "element count";
-    private static int problemSizeMin = 10000;
-    private static int problemSizeCount = 10;
-    private static int problemSizeStep = 10000;
+    private static int problemSizeMin = 1000;
+    private static int problemSizeCount = 50;
+    private static int problemSizeStep = 1000;
     private static int experimentIterationCount = 100; 
     	
 	protected HashTable<Integer, Integer> table;

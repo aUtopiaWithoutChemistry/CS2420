@@ -5,6 +5,13 @@ import org.junit.jupiter.api.BeforeEach;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Test class for hash table, tests using wrapper class and String class to check
+ * the generic part works fine, also checks all the method in HashTable class.
+ *
+ * @author Zifan Zuo and Xinrui Ou
+ * @version 2025-04-01
+ */
 class HashTableTest {
     private HashTable<Integer, Integer> emptyTable, smallTable, largeTable, customizeTable;
     private HashTable<String, String> genericTable;

@@ -2,8 +2,16 @@ package assign09;
 
 import java.text.DecimalFormat;
 
+/**
+ * This class provides a simple representation for a University of Utah student.
+ * Object's hashCode method is overridden with a correct hash function for this
+ * object, but one that does a medium job of distributing students in a hash
+ * table.
+ *
+ * @author Zifan Zuo and Xinrui Ou
+ * @version 2025-04-01
+ */
 public class StudentMediumHash {
-
     private int uid;
     private String firstName;
     private String lastName;
@@ -74,8 +82,13 @@ public class StudentMediumHash {
         return firstName + " " + lastName + " (u" + formatter.format(uid) + ")";
     }
 
+    /**
+     * The hashCode method for StudentMediumHash class, it returns the sum of
+     * this student's firstName's length and lastName's length.
+     *
+     * @return medium quality hashCode
+     */
     public int hashCode() {
-        // TODO: Fill in and add method comment.
         return firstName.length() + lastName.length();
     }
 }

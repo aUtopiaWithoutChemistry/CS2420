@@ -14,7 +14,7 @@ public class LoadFactorCollisionExperiment extends CollisionExperiment<Integer, 
     // we need only a few iterations for each problem size.
     private static int experimentIterationCount = 5;
 
-    private static final double loadFactor = 100.0;
+    private static final double loadFactor = 1000.0;
     private Integer keyToPut;
 
     public static void main(String[] args) {
