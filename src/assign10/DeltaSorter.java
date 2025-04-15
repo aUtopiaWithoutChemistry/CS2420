@@ -1,5 +1,6 @@
 package assign10;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
@@ -7,8 +8,8 @@ import java.util.List;
  * This class contains generic static methods for sorting a descending delta-sorted list.
  * The result of both methods is that the list will be in descending order.
  * 
- * @author CS 2420 course staff and ??
- * @version ??
+ * @author CS 2420 course staff and Zifan Zuo and Xinrui Ou.
+ * @version 2025-04-10
  */
 public class DeltaSorter {
 	
@@ -38,12 +39,16 @@ public class DeltaSorter {
 	 *         equal to the size of the list
 	 */
 	public static <T> void sort(List<T> list, int delta, Comparator<? super T> cmp){
-		int count = 0;
-		BinaryMaxHeap<T> heap = new BinaryMaxHeap<>(cmp);
-
-		for (int i = 0; i < delta + 1; i++) {
-			heap.add(list.get(i));
+		if (delta < 0 || delta >= list.size()) {
+			throw new IllegalArgumentException("invalid input of delta");
 		}
+		int count = 0;
+		List<T> starterList = new ArrayList<>();
+		for (int i = 0; i < delta + 1; i++) {
+			starterList.add(list.get(i));
+		}
+
+		BinaryMaxHeap<T> heap = new BinaryMaxHeap<>(starterList, cmp);
 
 		for (int i = delta + 1; i < list.size(); i++) {
 			heap.add(list.get(i));
@@ -57,6 +62,13 @@ public class DeltaSorter {
 		}
 	}
 
+	/**
+	 * The insertion sort from previous assignment, add it to here only for doing timing
+	 * experiment.
+	 *
+	 * @param list to sort that is currently delta-sorted and will be fully sorted
+	 * @param cmp Comparator for ordering the elements
+	 */
 	public static <T> void insertionSort(List<T> list, Comparator<? super T> cmp) {
 		// loop over every item in the array
 		for (int i = 1; i < list.size(); i++) {

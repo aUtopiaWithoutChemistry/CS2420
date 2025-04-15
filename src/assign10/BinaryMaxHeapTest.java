@@ -4,11 +4,20 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Tests for BinaryMaxHeap
+ * Includes tests for different size, edge cases, different data types,
+ * customized comparator, and all public methods in BinaryMaxHeap class.
+ *
+ * @author Zifan Zuo and Xinrui Ou
+ * @version 2025-04-10
+ */
 class BinaryMaxHeapTest {
     private BinaryMaxHeap<Integer> emptyHeap, smallHeap, mediumHeap, largeHeap, emptyMinHeap, largeMinHeap;
     private BinaryMaxHeap<String> stringHeap;
@@ -63,6 +72,7 @@ class BinaryMaxHeapTest {
 
     @Test
     void testAddSmallHeap() {
+        System.out.println(Arrays.toString(smallHeap.toArray()));
         smallHeap.add(1);
         assertEquals(7, smallHeap.peek());
         smallHeap.add(5);
@@ -344,11 +354,11 @@ class BinaryMaxHeapTest {
 
     @Test
     void testToArrayEmptyHeap() {
-        assertArrayEquals(new Object[8], emptyHeap.toArray());
+        assertArrayEquals(new Object[0], emptyHeap.toArray());
     }
 
     @Test
     void testToArraySmallHeap() {
-        assertArrayEquals(new Object[]{null, 7, 5, 1, null, null, null, null}, smallHeap.toArray());
+        assertArrayEquals(new Object[]{7, 5, 1}, smallHeap.toArray());
     }
 }
