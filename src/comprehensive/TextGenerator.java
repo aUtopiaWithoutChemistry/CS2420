@@ -1,16 +1,13 @@
 package comprehensive;
 
+/**
+ * @author Zifan Zuo
+ * @version f(n) = 2025-n-n^2, n = 4
+ */
 public class TextGenerator {
     public static void main(String[] args) {
-        String filePath = args[0];
-        String seed = args[1];
-        int wordNumber = Integer.parseInt(args[2]);
-        String outputType = args[3];
-
-        MarkovChain artificialIdiot = new MarkovChain(filePath);
-        System.out.println(artificialIdiot.generate(seed, wordNumber, outputType));
-
-//        test("src/comprehensive/pg1998.txt", "my", 1000, "random");
+        MarkovChain artificialIdiot = new MarkovChain(args[0]);
+        System.out.println(artificialIdiot.generate(args[1], Integer.parseInt(args[2]), args[3]));
     }
 
     public static void test(String filePath, String seed, int wordNumber, String outputType) {
