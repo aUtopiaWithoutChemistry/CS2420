@@ -147,7 +147,6 @@ public class MarkovChain {
      * The output will be the k most probable words that could come after the seed word.
      * The words must be output in descending order from most probable to least. Ties
      * for probability will be broken using the lexicographical ordering of the words.
-     *
      * O(k)
      *
      * @param seed the initial word.
@@ -171,7 +170,6 @@ public class MarkovChain {
      * A private helper method to deal with give deterministic output.
      * Generate output based on given seed with length k, every
      * next word will select the most possible word.
-     *
      * O(k)
      *
      * @param seed the initial word.
@@ -198,7 +196,6 @@ public class MarkovChain {
     /**
      * A private helper method to deal with give random output.
      * Generate random output based on given seed with length k.
-     *
      * O(k)
      *
      * @param seed the initial word.
@@ -273,7 +270,6 @@ public class MarkovChain {
      * Counting the frequency of each word and the word after it. Make
      * Child objects in each Children objects, and store those Children
      * object in HashMap.
-     *
      * O(N) - N total count of the input word list.
      */
     private void training() {
